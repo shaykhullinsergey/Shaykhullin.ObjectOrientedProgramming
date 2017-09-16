@@ -44,5 +44,33 @@ namespace Shaykhullin.Models.Practice1
         numerator: a.numerator * b.numerator,
         denominator: b.denominator * a.denominator
       );
+
+    public static (long Integer, long Numerator, long Denominator) ToProperFraction(double number)
+    {
+      var integer = GetInteger();
+      var denominator = GetDenominator(number);
+      var numerator = GetNumerator();
+      (numerator, denominator) = MathUtils.MinimizeFraction(numerator, denominator);
+
+      return (integer, numerator, denominator);
+
+
+      long GetInteger() => (long)Math.Floor(number);
+      long GetDenominator(double numberValue)
+      {
+        var calculatedDenominator = 1L;
+
+        while (HasNoMoreDigitsAfterDot())
+        {
+          numberValue *= 10;
+          calculatedDenominator *= 10;
+        }
+
+        return calculatedDenominator;
+
+        bool HasNoMoreDigitsAfterDot() => Math.Abs(numberValue % 1) > double.Epsilon;
+      }
+      long GetNumerator() => (long)Math.Round((number % 1) * denominator);
+    }
   }
 }
