@@ -12,7 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
     <Folder Include="Builders\" />
     <Folder Include="Configurations\" />
     <Folder Include="DependencyInjection\" />
