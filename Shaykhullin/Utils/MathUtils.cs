@@ -31,5 +31,31 @@ namespace Shaykhullin.Utils
         return a;
       }
     }
+
+    public static (long numerator, long denominator) MinimizeFraction(long numerator, long denominator)
+    {
+      if (numerator == 0)
+      {
+        return (numerator: 0, denominator: 0);
+      }
+
+      var commonDivisor = GreatestCommonDivisor(numerator, denominator);
+
+      return (numerator / commonDivisor, denominator / commonDivisor);
+
+      long GreatestCommonDivisor(long a, long b)
+      {
+        long temp;
+
+        while (b != 0)
+        {
+          temp = b;
+          b = a % b;
+          a = temp;
+        }
+
+        return a;
+      }
+    }
   }
 }
