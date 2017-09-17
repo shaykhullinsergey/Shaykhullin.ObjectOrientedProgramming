@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-using Shaykhullin.Models.Practice1;
+using Shaykhullin.Shared.Practice1;
 
 namespace Shaykhullin.Practice1.Views
 {

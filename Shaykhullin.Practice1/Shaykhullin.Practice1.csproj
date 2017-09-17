@@ -78,12 +78,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shaykhullin.Models\Shaykhullin.Models.csproj">
-      <Project>{8b8d0557-ec52-455e-98fe-9e4cb7ca5c4c}</Project>
-      <Name>Shaykhullin.Models</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Shaykhullin\Shaykhullin.csproj">
-      <Project>{d6a182e1-3d94-409c-bd2a-2e6d12e4a94f}</Project>
+      <Project>{26859684-1f80-402c-8060-f43da9d5b32c}</Project>
       <Name>Shaykhullin</Name>
     </ProjectReference>
   </ItemGroup>
