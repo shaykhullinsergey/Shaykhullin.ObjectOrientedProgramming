@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Labs", "Labs", "{C7621EE6-2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin", "Shaykhullin\Shaykhullin.csproj", "{26859684-1F80-402C-8060-F43DA9D5B32C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.DependencyInjection", "Shaykhullin.DependencyInjection\Shaykhullin.DependencyInjection.csproj", "{C572CC4F-393E-443F-B9A9-174D25406E8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{26859684-1F80-402C-8060-F43DA9D5B32C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26859684-1F80-402C-8060-F43DA9D5B32C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26859684-1F80-402C-8060-F43DA9D5B32C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C572CC4F-393E-443F-B9A9-174D25406E8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C572CC4F-393E-443F-B9A9-174D25406E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C572CC4F-393E-443F-B9A9-174D25406E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C572CC4F-393E-443F-B9A9-174D25406E8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
