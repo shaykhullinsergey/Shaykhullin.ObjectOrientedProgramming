@@ -78,6 +78,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Shaykhullin.DependencyInjection\Shaykhullin.DependencyInjection.csproj">
+      <Project>{C572CC4F-393E-443F-B9A9-174D25406E8E}</Project>
+      <Name>Shaykhullin.DependencyInjection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Shaykhullin\Shaykhullin.csproj">
       <Project>{26859684-1f80-402c-8060-f43da9d5b32c}</Project>
       <Name>Shaykhullin</Name>

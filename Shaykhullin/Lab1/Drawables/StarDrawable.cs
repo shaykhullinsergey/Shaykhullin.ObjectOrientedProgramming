@@ -8,7 +8,7 @@ namespace Shaykhullin.Shared.Lab1.Drawables
     protected override Pen Pen { get; } = new Pen(Color.FromArgb(255, 133, 52, 183), 5.0f);
     protected override Brush Brush { get; } = new SolidBrush(Color.FromArgb(255, 71, 5, 112));
 
-    public StarDrawable(Bitmap bitmap) : base(bitmap, pointsCount: 10)
+    public StarDrawable() : base(pointsCount: 10)
     {
       for (int i = 0; i < Points.Length / 2; i++)
       {

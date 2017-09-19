@@ -72,5 +72,11 @@
     <Folder Include="Shared\Configurations\" />
     <Folder Include="Shared\DependencyInjection\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shaykhullin.DependencyInjection\Shaykhullin.DependencyInjection.csproj">
+      <Project>{C572CC4F-393E-443F-B9A9-174D25406E8E}</Project>
+      <Name>Shaykhullin.DependencyInjection</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

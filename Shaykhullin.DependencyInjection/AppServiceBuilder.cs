@@ -17,7 +17,7 @@ namespace Shaykhullin.DependencyInjection.App
       }
     }
 
-		public IServiceEntity<TRegister> Register<TRegister>() where TRegister : new()
+		public IServiceEntity<TRegister> Register<TRegister>()
 		{
 			return new AppServiceEntity<TRegister>(this, dependensies);
 		}

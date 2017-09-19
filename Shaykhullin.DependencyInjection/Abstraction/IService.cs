@@ -8,6 +8,7 @@ namespace Shaykhullin.DependencyInjection.Abstraction
 {
 	public interface IService
 	{
-		TResolve Resolve<TResolve>(params object[] args);
+    TResolve Resolve<TResolve>(params object[] args);
+    TResolve Create<TResolve>(Type type, params object[] args);
 	}
 }

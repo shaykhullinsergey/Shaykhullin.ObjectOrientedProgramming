@@ -10,7 +10,7 @@ namespace Shaykhullin.Shared.Lab1.Drawables
 
     private int size = 30;
 
-    public GreekCrossDrawable(Bitmap bitmap) : base(bitmap) =>
+    public GreekCrossDrawable() =>
       Points = Quaternion.Factory.AsFluent(prop => prop - size * 1.5)
         .With(size, 0)
         .With(size, size)

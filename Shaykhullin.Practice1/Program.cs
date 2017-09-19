@@ -1,4 +1,6 @@
-﻿using Shaykhullin.Practice1.Views;
+﻿using Shaykhullin.DependencyInjection.App;
+using Shaykhullin.Practice1.Views;
+using Shaykhullin.Shared.Practice1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +19,16 @@ namespace Shaykhullin.Practice1
     {
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
-      Application.Run(new MainView());
+
+      var service = new AppServiceBuilder()
+        .Register<MainView>()
+          .AsSingleton()
+        .Register<Fraction>()
+          .Returns(new Fraction(12, 12))
+          .AsTransient()
+        .Service;
+
+      Application.Run(service.Resolve<MainView>());
     }
   }
 }

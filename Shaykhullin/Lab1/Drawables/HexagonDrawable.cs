@@ -8,7 +8,7 @@ namespace Shaykhullin.Shared.Lab1.Drawables
     protected override Pen Pen { get; } = new Pen(Color.FromArgb(255, 202, 44, 226), 3.0f);
     protected override Brush Brush { get; } = new SolidBrush(Color.FromArgb(255, 123, 7, 141));
 
-    public HexagonDrawable(Bitmap bitmap) : base(bitmap, 6)
+    public HexagonDrawable() : base(6)
     {
       for (int i = 0; i < Points.Length; i++)
       {

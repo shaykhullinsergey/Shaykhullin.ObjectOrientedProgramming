@@ -15,6 +15,14 @@ namespace Shaykhullin.DependencyInjection.App
 			this.dependensies = dependensies ?? throw new ArgumentNullException(nameof(dependensies));
 		}
 
+    public TResolve Create<TResolve>(Type type, params object[] args)
+    {
+      var instance = (TResolve)Activator.CreateInstance(type, args);
+      ResolveFieldsRecursive(instance);
+      ResolvePropertiesRecursive(instance);
+      return instance;
+    }
+
 		public TResolve Resolve<TResolve>(params object[] args)
 		{
 			if(dependensies.TryGetValue(typeof(TResolve), out var creator))
@@ -38,10 +46,9 @@ namespace Shaykhullin.DependencyInjection.App
 				if (dependensies.TryGetValue(field.FieldType, out var fieldCreator))
 				{
 					field.SetValue(instance, fieldCreator.Create<object>());
+				  ResolveFieldsRecursive(field.GetValue(instance));
+				  ResolvePropertiesRecursive(field.GetValue(instance));
 				}
-
-				ResolveFieldsRecursive(field.GetValue(instance));
-				ResolvePropertiesRecursive(field.GetValue(instance));
 			}
 		}
 
@@ -54,10 +61,9 @@ namespace Shaykhullin.DependencyInjection.App
 				if (dependensies.TryGetValue(property.PropertyType, out var propertyCreator))
 				{
 					property.SetValue(instance, propertyCreator.Create<object>());
+				  ResolveFieldsRecursive(property.GetValue(instance));
+				  ResolvePropertiesRecursive(property.GetValue(instance));
 				}
-
-				ResolveFieldsRecursive(property.GetValue(instance));
-				ResolvePropertiesRecursive(property.GetValue(instance));
 			}
 		}
 	}

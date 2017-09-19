@@ -1,20 +1,21 @@
 ﻿using System.Linq;
 using System.Drawing;
+using Shaykhullin.DependencyInjection;
 
 namespace Shaykhullin.Shared.Lab1.Drawables
 {
   public abstract class DrawableBase : IDrawable<Bitmap, Matrix3x3>
   {
-    protected Bitmap Bitmap { get; }
+    [Inject]
+    public Bitmap Bitmap { get; set; }
     protected Quaternion[] Points { get; set; }
     protected abstract Pen Pen { get; }
     protected abstract Brush Brush { get; }
 
-    public DrawableBase(Bitmap bitmap)
+    public DrawableBase()
     {
-      Bitmap = bitmap;
     }
-    public DrawableBase(Bitmap bitmap, int pointsCount) : this(bitmap)
+    public DrawableBase(int pointsCount)
     {
       this.Points = new Quaternion[pointsCount];
     }

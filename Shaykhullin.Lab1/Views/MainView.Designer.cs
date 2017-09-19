@@ -63,6 +63,11 @@
       resources.ApplyResources(this.comboBox2, "comboBox2");
       this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
       this.comboBox2.FormattingEnabled = true;
+      this.comboBox2.Items.AddRange(new object[] {
+            resources.GetString("comboBox2.Items"),
+            resources.GetString("comboBox2.Items1"),
+            resources.GetString("comboBox2.Items2"),
+            resources.GetString("comboBox2.Items3")});
       this.comboBox2.Name = "comboBox2";
       this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.OnSelected);
       // 
@@ -137,6 +142,7 @@
       this.Controls.Add(this.image);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
       this.Name = "MainView";
+      this.Load += new System.EventHandler(this.OnLoad);
       ((System.ComponentModel.ISupportInitialize)(this.image)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.shiftX)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.shiftY)).EndInit();

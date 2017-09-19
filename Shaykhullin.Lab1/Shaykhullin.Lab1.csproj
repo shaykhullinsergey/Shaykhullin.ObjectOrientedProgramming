@@ -62,6 +62,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\MainView.en-US.resx">
+      <DependentUpon>MainView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>
     </EmbeddedResource>
@@ -79,6 +82,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Shaykhullin.DependencyInjection\Shaykhullin.DependencyInjection.csproj">
+      <Project>{c572cc4f-393e-443f-b9a9-174d25406e8e}</Project>
+      <Name>Shaykhullin.DependencyInjection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Shaykhullin\Shaykhullin.csproj">
       <Project>{26859684-1f80-402c-8060-f43da9d5b32c}</Project>
       <Name>Shaykhullin</Name>
