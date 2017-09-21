@@ -76,7 +76,7 @@
       this.denominatorResult.Size = new System.Drawing.Size(0, 13);
       this.denominatorResult.TabIndex = 4;
       // 
-      // Form1
+      // MainView
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -86,7 +86,7 @@
       this.Controls.Add(this.integerResult);
       this.Controls.Add(this.button1);
       this.Controls.Add(this.inputTextBox);
-      this.Name = "Form1";
+      this.Name = "MainView";
       this.Text = "Form1";
       this.ResumeLayout(false);
       this.PerformLayout();
