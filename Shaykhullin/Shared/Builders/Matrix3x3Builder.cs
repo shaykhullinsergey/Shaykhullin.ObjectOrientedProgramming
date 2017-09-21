@@ -31,9 +31,10 @@ namespace Shaykhullin.Builders
         this.y = y;
       }
 
-      public Matrix3x3Builder Has(double value)
+      public Matrix3x3Builder Has(double? value)
       {
-        builder.Matrix[x, y] = value;
+        builder.Matrix[x, y] = value ?? 0;
+
         return builder;
       }
     }
