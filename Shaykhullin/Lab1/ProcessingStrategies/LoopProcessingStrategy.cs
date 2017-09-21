@@ -16,12 +16,6 @@ namespace Shaykhullin.Shared.Lab1.ProcessingStrategies
     public Bitmap Process()
     {
       var matrix = Matrix3x3.Factory.Identity;
-      var s = strategies[0];
-      s.State = Value.Item2;
-
-      matrix *= s.Process();
-
-      return State.Draw(matrix);
 
       for (int i = 0; i < strategies.Length; i++)
       {
@@ -33,6 +27,7 @@ namespace Shaykhullin.Shared.Lab1.ProcessingStrategies
         matrix *= strategy.Process();
       }
 
+      return State.Draw(matrix);
     }
   }
 }
