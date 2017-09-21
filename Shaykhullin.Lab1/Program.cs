@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using Shaykhullin.Lab1.Views;
 using Shaykhullin.DependencyInjection.App;
 using System.Collections.Generic;
-using System.Reflection;
 using Shaykhullin.Shared.Lab1.Drawables;
 using Shaykhullin.Shared.Lab1.ProcessingStrategies;
 using System.Drawing;
@@ -14,9 +13,6 @@ namespace Shaykhullin.Lab1
 {
   static class Program
   {
-    /// <summary>
-    /// The main entry point for the application.
-    /// </summary>
     [STAThread]
     static void Main()
     {
@@ -39,10 +35,10 @@ namespace Shaykhullin.Lab1
         .Register<IStateProcessingStrategy<Matrix3x3, int>[]>()
           .Returns(new IStateProcessingStrategy<Matrix3x3, int>[]
           {
-            new XShiftProcessingStrategy(),
-            new YShiftProcessingStrategy(),
             new RotationProcessingStrategy(),
-            new ScaleProcessingStrategy()
+            new ScaleProcessingStrategy(),
+            new XShiftProcessingStrategy(),
+            new YShiftProcessingStrategy()
           })
           .AsSingleton()
         .Register<LoopProcessingStrategy>()
