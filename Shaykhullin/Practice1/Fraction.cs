@@ -1,7 +1,8 @@
-﻿using Shaykhullin.Utils;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+using Shaykhullin.Utils;
 
 namespace Shaykhullin.Shared.Practice1
 {
@@ -45,32 +46,59 @@ namespace Shaykhullin.Shared.Practice1
         denominator: b.denominator * a.denominator
       );
 
-    public static (long Integer, long Numerator, long Denominator) ToProperFraction(double number)
+    public static (long Integer, long Numerator, long Denominator)? ParseToProperFraction(string number)
     {
-      var integer = GetInteger();
-      var denominator = GetDenominator(number);
-      var numerator = GetNumerator();
-      (numerator, denominator) = MathUtils.MinimizeFraction(numerator, denominator);
-
-      return (integer, numerator, denominator);
-
-
-      long GetInteger() => (long)Math.Floor(number);
-      long GetDenominator(double numberValue)
+      if(double.TryParse(number, out var result))
       {
-        var calculatedDenominator = 1L;
-
-        while (HasNoMoreDigitsAfterDot())
-        {
-          numberValue *= 10;
-          calculatedDenominator *= 10;
-        }
-
-        return calculatedDenominator;
-
-        bool HasNoMoreDigitsAfterDot() => Math.Abs(numberValue % 1) > double.Epsilon;
+        return ToProperFraction();
       }
-      long GetNumerator() => (long)Math.Round((number % 1) * denominator);
+      return FromPeriodicFraction();
+
+      (long, long, long) ToProperFraction()
+      {
+        var integer = GetInteger();
+        var denominator = GetDenominator(result);
+        var numerator = GetNumerator();
+        (numerator, denominator) = MathUtils.MinimizeFraction(numerator, denominator);
+
+        return (integer, numerator, denominator);
+
+        long GetInteger() => (long)Math.Truncate(result);
+        long GetDenominator(double numberValue)
+        {
+          var calculatedDenominator = 1L;
+
+          while (HasNoMoreDigitsAfterDot())
+          {
+            numberValue *= 10;
+            calculatedDenominator *= 10;
+          }
+
+          return calculatedDenominator;
+
+          bool HasNoMoreDigitsAfterDot() => Math.Abs(numberValue % 1) > double.Epsilon;
+        }
+        long GetNumerator() => (long)Math.Round((result % 1) * denominator);
+      }
+      (long, long, long)? FromPeriodicFraction()
+      {
+        if (new Regex(@"^\d+\.\(\d+\)").IsMatch(number))
+        {
+          var (integer, numerator, denominator) = ParsePeriodicFraction();
+          (numerator, denominator) = MathUtils.MinimizeFraction(numerator, denominator);
+          return (integer, numerator, denominator);
+
+          (long, long, long) ParsePeriodicFraction()
+          {
+            var split = number.Split('.')
+              .Select(s => new string(s.Trim('(', ')').Take(17).ToArray()))
+              .ToArray();
+
+            return (long.Parse(split[0]), long.Parse(split[1]), long.Parse(new string('9', split[1].Length));
+          }
+        }
+        return null;
+      }
     }
   }
 }
