@@ -80,7 +80,7 @@
       // 
       resources.ApplyResources(this.shiftX, "shiftX");
       this.shiftX.Name = "shiftX";
-      this.shiftX.Tag = "0";
+      this.shiftX.Tag = "2";
       this.shiftX.TickStyle = System.Windows.Forms.TickStyle.Both;
       this.shiftX.Value = 5;
       this.shiftX.ValueChanged += new System.EventHandler(this.OnValueChanged);
@@ -89,7 +89,7 @@
       // 
       resources.ApplyResources(this.shiftY, "shiftY");
       this.shiftY.Name = "shiftY";
-      this.shiftY.Tag = "1";
+      this.shiftY.Tag = "3";
       this.shiftY.TickStyle = System.Windows.Forms.TickStyle.Both;
       this.shiftY.Value = 5;
       this.shiftY.ValueChanged += new System.EventHandler(this.OnValueChanged);
@@ -103,7 +103,7 @@
       // 
       resources.ApplyResources(this.trackBar3, "trackBar3");
       this.trackBar3.Name = "trackBar3";
-      this.trackBar3.Tag = "2";
+      this.trackBar3.Tag = "0";
       this.trackBar3.TickStyle = System.Windows.Forms.TickStyle.Both;
       this.trackBar3.ValueChanged += new System.EventHandler(this.OnValueChanged);
       // 
@@ -116,7 +116,7 @@
       // 
       resources.ApplyResources(this.trackBar4, "trackBar4");
       this.trackBar4.Name = "trackBar4";
-      this.trackBar4.Tag = "3";
+      this.trackBar4.Tag = "1";
       this.trackBar4.TickStyle = System.Windows.Forms.TickStyle.Both;
       this.trackBar4.ValueChanged += new System.EventHandler(this.OnValueChanged);
       // 
