@@ -94,7 +94,7 @@ namespace Shaykhullin.Shared.Practice1
               .Select(s => new string(s.Trim('(', ')').Take(17).ToArray()))
               .ToArray();
 
-            return (long.Parse(split[0]), long.Parse(split[1]), long.Parse(new string('9', split[1].Length));
+            return (long.Parse(split[0]), long.Parse(split[1]), long.Parse(new string('9', split[1].Length)));
           }
         }
         return null;
