@@ -15,21 +15,24 @@ namespace Shaykhullin.Shared.Lab1.ProcessingStrategies
 
     public Bitmap Process()
     {
-      var matrix = Matrix3x3.Factory.Zero;
+      var matrix = Matrix3x3.Factory.Identity;
+      var s = strategies[0];
+      s.State = Value.Item2;
 
-      for (int index = 0; index < strategies.Length; index++)
+      matrix *= s.Process();
+
+      return State.Draw(matrix);
+
+      for (int i = 0; i < strategies.Length; i++)
       {
-        var strategy = strategies[index];
-
-        if(Value.Item1 == index)
+        var strategy = strategies[i];
+        if (Value.Item1 == i)
         {
           strategy.State = Value.Item2;
         }
-
-        matrix += strategy.Process();
+        matrix *= strategy.Process();
       }
 
-      return State.Draw(matrix);
     }
   }
 }

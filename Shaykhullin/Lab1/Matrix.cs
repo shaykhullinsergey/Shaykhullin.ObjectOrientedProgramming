@@ -91,14 +91,14 @@ namespace Shaykhullin.Shared.Lab1
           .In(2, 2).Has(1)
         .Matrix;
 
-      public Matrix3x3 ToTranslational(double shiftX, double shiftY) => 
+      public Matrix3x3 ToTranslational(double? shiftX = null, double? shiftY = null) => 
         Factory.Identity.AsFluent()
-          .In(2, 0).Has(shiftX)
-          .In(2, 1).Has(shiftY)
+          .In(2, 0).Has(shiftX) // 2 0
+          .In(2, 1).Has(shiftY) // 2 1
         .Matrix;
 
       public Matrix3x3 ToRotational(double angle) => 
-        Factory.Zero.AsFluent()
+        Factory.Identity.AsFluent()
           .In(0, 0).Has(Math.Cos(angle))
           .In(1, 1).Has(Math.Cos(angle))
           .In(0, 1).Has(-Math.Sin(angle))

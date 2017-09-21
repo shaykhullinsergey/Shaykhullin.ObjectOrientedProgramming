@@ -23,7 +23,8 @@ namespace Shaykhullin.Shared.Lab1.Drawables
     {
       var graphics = Graphics.FromImage(Bitmap);
       graphics.FillRectangle(Brush, 0, 0, Bitmap.Width, Bitmap.Height);
-      graphics.DrawPolygon(Pen, (Points * matrix)
+
+      graphics.DrawPolygon(Pen, (matrix * Points)
         .Select(point => new Point((int)point.X + 300, (int)point.Y + 200))
         .ToArray());
 

@@ -6,7 +6,7 @@
 
     public Matrix3x3 Process()
     {
-      return Matrix3x3.Factory.ToTranslational(0, State * 20);
+      return Matrix3x3.Factory.ToTranslational(shiftY: State * 20);
     }
   }
 }

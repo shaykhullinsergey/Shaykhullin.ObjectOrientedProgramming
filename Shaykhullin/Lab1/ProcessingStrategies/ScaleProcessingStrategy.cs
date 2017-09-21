@@ -6,7 +6,7 @@
 
     public Matrix3x3 Process()
     {
-      return Matrix3x3.Factory.ToScalable(State, State);
+      return Matrix3x3.Factory.ToScalable(State + 1, State + 1);
     }
   }
 }
