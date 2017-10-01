@@ -14,17 +14,25 @@ namespace Shaykhullin.Practice2
 
     private void OnCalculateClicked(object sender, EventArgs e)
     {
-      var result = Fraction.ParseToProperFraction(inputTextBox.Text);
+      long integer, numerator, denominator;
 
-      if(!result.HasValue)
+      if(double.TryParse(inputTextBox.Text, out var fraction))
+      {
+        (integer, numerator, denominator) = Fraction.ToProperFraction(fraction);
+      }
+      else if(double.TryParse(inputTextBox.Text.Replace("(", "").Replace(")", ""), out var periodicFraction))
+      {
+        (integer, numerator, denominator) = Fraction.FromPeriodicFraction(periodicFraction);
+      }
+      else
       {
         MessageBox.Show($"{inputTextBox.Text} is invalid double");
         return;
       }
 
-      integerResult.Text = result.Value.Integer.ToString();
-      numeratorResult.Text = result.Value.Numerator.ToString();
-      denominatorResult.Text = result.Value.Denominator.ToString();
+      integerResult.Text = integer.ToString();
+      numeratorResult.Text = numerator.ToString();
+      denominatorResult.Text = denominator.ToString();
     }
   }
 }

@@ -6,7 +6,7 @@
 
     public Matrix3x3 Process()
     {
-      return Matrix3x3.Factory.ToRotational(State);
+      return Matrix3x3.Factory.ToRotational(State * 4);
     }
   }
 }
