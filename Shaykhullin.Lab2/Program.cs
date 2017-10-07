@@ -1,4 +1,4 @@
-﻿using Shaykhullin.DependencyInjection.App;
+﻿using Shaykhullin.Injection;
 using Shaykhullin.Lab2.Views;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace Shaykhullin.Lab2
         .Register<MainView>()
           .AsSingleton()
         .Register<FormTree>()
-          .Returns(new FormTree(new TreeNode("Root")))
+          .Returns(s => new FormTree(new TreeNode("Root")))
           .AsSingleton()
       .Service;
 

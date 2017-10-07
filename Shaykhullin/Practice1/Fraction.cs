@@ -10,6 +10,10 @@ namespace Shaykhullin.Shared.Practice1
   {
     private int numerator, denominator;
 
+    public Fraction()
+    {
+    }
+
     public Fraction(int numerator, int denominator)
     {
       (this.numerator, this.denominator) =

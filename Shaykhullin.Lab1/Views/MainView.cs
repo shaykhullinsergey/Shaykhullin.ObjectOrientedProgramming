@@ -6,8 +6,7 @@ using System.Collections.Generic;
 using Shaykhullin.Extensions;
 using Shaykhullin.Shared.Lab1.Drawables;
 using Shaykhullin.Shared.Lab1.ProcessingStrategies;
-using Shaykhullin.DependencyInjection;
-using Shaykhullin.DependencyInjection.Abstraction;
+using Shaykhullin.Injection;
 
 namespace Shaykhullin.Lab1.Views
 {
@@ -34,7 +33,8 @@ namespace Shaykhullin.Lab1.Views
 
     private void OnSelected(object sender, EventArgs e)
     {
-      strategy.State = service.Create<DrawableBase>(drawables[(sender as ComboBox).Text]);
+      strategy.State = (DrawableBase) Activator.CreateInstance(drawables[(sender as ComboBox).Text]);
+      strategy.State.Bitmap = bitmap;
       image.Image = strategy.Process();
     }
 

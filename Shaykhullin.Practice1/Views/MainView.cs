@@ -2,8 +2,7 @@
 using System.Windows.Forms;
 
 using Shaykhullin.Shared.Practice1;
-using Shaykhullin.DependencyInjection.Abstraction;
-using Shaykhullin.DependencyInjection;
+using Shaykhullin.Injection;
 
 namespace Shaykhullin.Practice1.Views
 {

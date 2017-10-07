@@ -2,12 +2,12 @@
 using System.Windows.Forms;
 
 using Shaykhullin.Lab1.Views;
-using Shaykhullin.DependencyInjection.App;
 using System.Collections.Generic;
 using Shaykhullin.Shared.Lab1.Drawables;
 using Shaykhullin.Shared.Lab1.ProcessingStrategies;
 using System.Drawing;
 using Shaykhullin.Shared.Lab1;
+using Shaykhullin.Injection;
 
 namespace Shaykhullin.Lab1
 {
@@ -23,7 +23,7 @@ namespace Shaykhullin.Lab1
         .Register<MainView>()
           .AsSingleton()
         .Register<Dictionary<string, Type>>()
-          .Returns(new Dictionary<string, Type>
+          .Returns(s => new Dictionary<string, Type>
           {
             ["Star"] = typeof(StarDrawable),
             ["Hexagon"] = typeof(HexagonDrawable),
@@ -33,7 +33,7 @@ namespace Shaykhullin.Lab1
           .As<IReadOnlyDictionary<string, Type>>()
           .AsSingleton()
         .Register<IStateProcessingStrategy<Matrix3x3, int>[]>()
-          .Returns(new IStateProcessingStrategy<Matrix3x3, int>[]
+          .Returns(s => new IStateProcessingStrategy<Matrix3x3, int>[]
           {
             new RotationProcessingStrategy(),
             new ScaleProcessingStrategy(),
@@ -45,7 +45,7 @@ namespace Shaykhullin.Lab1
           .As<IStateValueProcessingStrategy<Bitmap, DrawableBase, (int, int)>>()
           .AsSingleton()
         .Register<Bitmap>()
-          .Returns(new Bitmap(1080, 617))
+          .Returns(s => new Bitmap(1080, 617))
           .AsSingleton()
       .Service;
 

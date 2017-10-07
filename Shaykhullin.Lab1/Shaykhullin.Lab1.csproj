@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Shaykhullin.Injection, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Shaykhullin.Injection.1.0.1\lib\netstandard2.0\Shaykhullin.Injection.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -68,6 +71,7 @@
     <EmbeddedResource Include="Views\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -82,10 +86,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shaykhullin.DependencyInjection\Shaykhullin.DependencyInjection.csproj">
-      <Project>{c572cc4f-393e-443f-b9a9-174d25406e8e}</Project>
-      <Name>Shaykhullin.DependencyInjection</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Shaykhullin\Shaykhullin.csproj">
       <Project>{26859684-1f80-402c-8060-f43da9d5b32c}</Project>
       <Name>Shaykhullin</Name>

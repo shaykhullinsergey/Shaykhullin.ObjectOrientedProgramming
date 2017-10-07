@@ -1,10 +1,7 @@
-﻿using Shaykhullin.DependencyInjection.App;
+﻿using Shaykhullin.Injection;
 using Shaykhullin.Practice1.Views;
 using Shaykhullin.Shared.Practice1;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Shaykhullin.Practice1
@@ -24,7 +21,6 @@ namespace Shaykhullin.Practice1
         .Register<MainView>()
           .AsSingleton()
         .Register<Fraction>()
-          .Returns(new Fraction(12, 12))
           .AsTransient()
         .Service;
 

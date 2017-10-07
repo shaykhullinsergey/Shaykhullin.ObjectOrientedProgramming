@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Shaykhullin.Injection, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Shaykhullin.Injection.1.0.1\lib\netstandard2.0\Shaykhullin.Injection.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -75,10 +78,7 @@
     <Folder Include="Shared\DependencyInjection\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shaykhullin.DependencyInjection\Shaykhullin.DependencyInjection.csproj">
-      <Project>{C572CC4F-393E-443F-B9A9-174D25406E8E}</Project>
-      <Name>Shaykhullin.DependencyInjection</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

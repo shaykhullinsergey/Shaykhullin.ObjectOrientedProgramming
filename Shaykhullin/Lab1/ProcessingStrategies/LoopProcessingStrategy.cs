@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using Shaykhullin.Shared.Lab1.Drawables;
-using Shaykhullin.DependencyInjection;
+using Shaykhullin.Injection;
 
 namespace Shaykhullin.Shared.Lab1.ProcessingStrategies
 {

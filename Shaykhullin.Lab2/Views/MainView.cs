@@ -1,4 +1,4 @@
-﻿using Shaykhullin.DependencyInjection;
+﻿using Shaykhullin.Injection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
