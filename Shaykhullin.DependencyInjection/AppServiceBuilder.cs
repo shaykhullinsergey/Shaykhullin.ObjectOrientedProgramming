@@ -6,20 +6,24 @@ namespace Shaykhullin.DependencyInjection.App
 {
 	public class AppServiceBuilder : IServiceBuilder
 	{
-		private Dictionary<Type, ICreationalBehaviour> dependensies = new Dictionary<Type, ICreationalBehaviour>();
+    private IDependencyContainer container = new AppDependencyContainer();
+
 		public IService Service
     {
       get
       {
-        var service = new AppService(dependensies);
-        dependensies.Add(typeof(IService), new AppSingletonCreationalBehaviour<IService>(service));
+        var service = new AppService(container);
+
+        container.Add(null, typeof(IService),
+          new AppSingletonCreationalBehaviour<IService>(service));
+
         return service;
       }
     }
 
 		public IServiceEntity<TRegister> Register<TRegister>()
 		{
-			return new AppServiceEntity<TRegister>(this, dependensies);
+			return new AppServiceEntity<TRegister>(this, container);
 		}
 	}
 }

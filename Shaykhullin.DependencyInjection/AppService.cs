@@ -1,70 +1,75 @@
 ﻿using System;
-using System.Collections.Generic;
-using Shaykhullin.DependencyInjection.Abstraction;
 using System.Linq;
 using System.Reflection;
+using Shaykhullin.DependencyInjection.Abstraction;
 
 namespace Shaykhullin.DependencyInjection.App
 {
-	internal class AppService : IService
-	{
-		private Dictionary<Type, ICreationalBehaviour> dependensies = new Dictionary<Type, ICreationalBehaviour>();
+  internal class AppService : IService
+  {
+    private IDependencyContainer container;
 
-		public AppService(Dictionary<Type, ICreationalBehaviour> dependensies)
-		{
-			this.dependensies = dependensies ?? throw new ArgumentNullException(nameof(dependensies));
-		}
+    public AppService(IDependencyContainer container)
+    {
+      this.container = container ?? throw new ArgumentNullException(nameof(container));
+    }
 
     public TResolve Create<TResolve>(Type type, params object[] args)
     {
       var instance = (TResolve)Activator.CreateInstance(type, args);
-      ResolveFieldsRecursive(instance);
-      ResolvePropertiesRecursive(instance);
+      ResolveInstanceRecursive(instance);
       return instance;
     }
 
-		public TResolve Resolve<TResolve>(params object[] args)
-		{
-			if(dependensies.TryGetValue(typeof(TResolve), out var creator))
-			{
-				var instance = creator.Create<TResolve>(args);
-				ResolveFieldsRecursive(instance);
-				ResolvePropertiesRecursive(instance);
-				return instance;
-			}
+    public TResolve Resolve<TResolve>(params object[] args)
+    {
+      var creator = container.TryGet(typeof(TResolve));
 
-			throw new NotSupportedException($"Type {typeof(TResolve).Name} is not registered in container");
-		}
+      if (creator == null)
+      {
+        throw new NotSupportedException($"Type {typeof(TResolve).Name} is not registered in container");
+      }
 
-		private void ResolveFieldsRecursive(object instance)
-		{
-			var fields = instance.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
-				.Where(p => p.IsDefined(typeof(InjectAttribute)));
+      var instance = creator.Create<TResolve>();
+      ResolveInstanceRecursive(instance);
+      return instance;
+    }
 
-			foreach (var field in fields)
-			{
-				if (dependensies.TryGetValue(field.FieldType, out var fieldCreator))
-				{
-					field.SetValue(instance, fieldCreator.Create<object>());
-				  ResolveFieldsRecursive(field.GetValue(instance));
-				  ResolvePropertiesRecursive(field.GetValue(instance));
-				}
-			}
-		}
+    private void ResolveInstanceRecursive(object instance)
+    {
+      var fieldsInfo = instance.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
+        .Where(field => field.IsDefined(typeof(InjectAttribute)))
+        .Select(field => (field, field.GetCustomAttribute<InjectAttribute>()));
 
-		private void ResolvePropertiesRecursive(object instance)
-		{
-			var properties = instance.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public)
-				.Where(p => p.IsDefined(typeof(InjectAttribute)));
-			foreach (var property in properties)
-			{
-				if (dependensies.TryGetValue(property.PropertyType, out var propertyCreator))
-				{
-					property.SetValue(instance, propertyCreator.Create<object>());
-				  ResolveFieldsRecursive(property.GetValue(instance));
-				  ResolvePropertiesRecursive(property.GetValue(instance));
-				}
-			}
-		}
-	}
+      foreach (var info in fieldsInfo)
+      {
+        var (field, inject) = info;
+
+        var creator = container.TryGet(field.FieldType, inject.Name);
+
+        if (creator != null)
+        {
+          field.SetValue(instance, creator.Create<object>());
+          ResolveInstanceRecursive(field.GetValue(instance));
+        }
+      }
+
+      var propertiesInfo = instance.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public)
+        .Where(p => p.IsDefined(typeof(InjectAttribute)))
+        .Select(p => (p, p.GetCustomAttribute<InjectAttribute>()));
+
+      foreach (var info in propertiesInfo)
+      {
+        var (property, inject) = info;
+
+        var creator = container.TryGet(property.PropertyType, inject.Name);
+
+        if (creator != null)
+        {
+          property.SetValue(instance, creator.Create<object>());
+          ResolveInstanceRecursive(property.GetValue(instance));
+        }
+      }
+    }
+  }
 }

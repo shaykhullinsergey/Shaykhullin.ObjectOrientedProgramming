@@ -7,25 +7,26 @@ namespace Shaykhullin.DependencyInjection.App
 	internal class AppCreationalSelector<TRegister, TResolve> : ICreationalSelector<TRegister, TResolve>
 	{
 		private IServiceBuilder builder;
-		private Dictionary<Type, ICreationalBehaviour> dependencies;
+    private IDependencyContainer container;
 		private TRegister returns;
+    private string named;
 
-		public AppCreationalSelector(IServiceBuilder builder, Dictionary<Type, ICreationalBehaviour> dependencies, TRegister returns)
+		public AppCreationalSelector(IServiceBuilder builder, IDependencyContainer container, TRegister returns, string named)
 		{
 			this.builder = builder;
-			this.dependencies = dependencies;
+			this.container = container;
 			this.returns = returns;
 		}
 
 		public IServiceBuilder AsSingleton()
 		{
-			dependencies.Add(typeof(TResolve), new AppSingletonCreationalBehaviour<TRegister>(returns));
+			container.Add(named, typeof(TResolve), new AppSingletonCreationalBehaviour<TRegister>(returns));
 			return builder;
 		}
 
 		public IServiceBuilder AsTransient()
 		{
-			dependencies.Add(typeof(TResolve), new AppTransientCreationalBehaviour<TRegister>(returns));
+			container.Add(named, typeof(TResolve), new AppTransientCreationalBehaviour<TRegister>(returns));
 			return builder;
 		}
 	}

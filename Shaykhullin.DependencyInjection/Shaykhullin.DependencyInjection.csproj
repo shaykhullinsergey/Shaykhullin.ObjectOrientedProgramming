@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Abstraction\ICreationalBehaviour.cs" />
     <Compile Include="Abstraction\ICreationalSelector.cs" />
+    <Compile Include="Abstraction\IDependencyContainer.cs" />
     <Compile Include="Abstraction\IService.cs" />
     <Compile Include="Abstraction\IServiceBuilder.cs" />
     <Compile Include="Abstraction\IServiceEntity.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="AppSingletonCreationalBehaviour.cs" />
     <Compile Include="AppTransientCreationalBehaviour.cs" />
     <Compile Include="Attributes\InjectAttribute.cs" />
+    <Compile Include="AppDependencyContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -7,18 +7,19 @@ namespace Shaykhullin.DependencyInjection.App
 	internal class AppServiceEntity<TRegister> : IServiceEntity<TRegister>
 	{
 		private IServiceBuilder builder;
-		private Dictionary<Type, ICreationalBehaviour> dependencies;
+		private IDependencyContainer container;
 		private TRegister returns;
+    private string named;
 
-		public AppServiceEntity(IServiceBuilder builder, Dictionary<Type, ICreationalBehaviour> dependencies)
+		public AppServiceEntity(IServiceBuilder builder, IDependencyContainer container)
 		{
 			this.builder = builder;
-			this.dependencies = dependencies;
+			this.container = container;
 		}
 
 		public ICreationalSelector<TRegister, TResolve> As<TResolve>()
 		{
-			return new AppCreationalSelector<TRegister, TResolve>(builder, dependencies, returns);
+			return new AppCreationalSelector<TRegister, TResolve>(builder, container, returns, named);
 		}
 
 		public IServiceEntity<TRegister> Returns(TRegister returns)
@@ -27,14 +28,20 @@ namespace Shaykhullin.DependencyInjection.App
 			return this;
 		}
 
+    public IServiceEntity<TRegister> Named(string named)
+    {
+      this.named = named;
+      return this;
+    }
+
 		public IServiceBuilder AsSingleton()
 		{
-			return new AppCreationalSelector<TRegister, TRegister>(builder, dependencies, returns).AsSingleton();
+			return new AppCreationalSelector<TRegister, TRegister>(builder, container, returns, named).AsSingleton();
 		}
 
 		public IServiceBuilder AsTransient()
 		{
-			return new AppCreationalSelector<TRegister, TRegister>(builder, dependencies, returns).AsTransient();
+			return new AppCreationalSelector<TRegister, TRegister>(builder, container, returns, named).AsTransient();
 		}
 	}
 }
