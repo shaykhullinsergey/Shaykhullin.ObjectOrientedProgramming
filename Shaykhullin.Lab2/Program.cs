@@ -1,10 +1,7 @@
-﻿using Shaykhullin.Injection;
-using Shaykhullin.Lab2.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
+using Shaykhullin.Injection;
+using Shaykhullin.Lab2.Views;
 
 namespace Shaykhullin.Lab2
 {
@@ -19,10 +16,7 @@ namespace Shaykhullin.Lab2
       var service = new AppServiceBuilder()
         .Register<MainView>()
           .AsSingleton()
-        .Register<FormTree>()
-          .Returns(s => new FormTree(new TreeNode("Root")))
-          .AsSingleton()
-      .Service;
+        .Service;
 
       Application.Run(service.Resolve<MainView>());
     }
