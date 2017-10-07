@@ -39,7 +39,7 @@ namespace Shaykhullin.DependencyInjection.App
 		private void ResolveFieldsRecursive(object instance)
 		{
 			var fields = instance.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
-				.Where(p => p.GetCustomAttribute<InjectAttribute>() != null);
+				.Where(p => p.IsDefined(typeof(InjectAttribute)));
 
 			foreach (var field in fields)
 			{
@@ -55,7 +55,7 @@ namespace Shaykhullin.DependencyInjection.App
 		private void ResolvePropertiesRecursive(object instance)
 		{
 			var properties = instance.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public)
-				.Where(p => p.GetCustomAttribute<InjectAttribute>() != null);
+				.Where(p => p.IsDefined(typeof(InjectAttribute)));
 			foreach (var property in properties)
 			{
 				if (dependensies.TryGetValue(property.PropertyType, out var propertyCreator))

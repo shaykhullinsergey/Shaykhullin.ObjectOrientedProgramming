@@ -56,6 +56,8 @@
     <Compile Include="Lab1\ProcessingStrategies\XShiftProcessingStrategy.cs" />
     <Compile Include="Lab1\ProcessingStrategies\YShiftProcessingStrategy.cs" />
     <Compile Include="Lab1\Quaternion.cs" />
+    <Compile Include="Lab2\FormTree.cs" />
+    <Compile Include="Lab2\Tree.cs" />
     <Compile Include="Lines\Ball.cs" />
     <Compile Include="Lines\FieldCell.cs" />
     <Compile Include="Practice1\Fraction.cs" />

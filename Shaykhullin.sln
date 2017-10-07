@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26906.1
+VisualStudioVersion = 15.0.26929.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.Practice1", "Shaykhullin.Practice1\Shaykhullin.Practice1.csproj", "{010CD4E7-E921-4BFB-B014-F968D497F9D8}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin", "Shaykhullin\Shaykhullin.csproj", "{26859684-1F80-402C-8060-F43DA9D5B32C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.DependencyInjection", "Shaykhullin.DependencyInjection\Shaykhullin.DependencyInjection.csproj", "{C572CC4F-393E-443F-B9A9-174D25406E8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.Lab2", "Shaykhullin.Lab2\Shaykhullin.Lab2.csproj", "{607F8F4F-087B-4FDB-B8BE-90AD631295A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{C572CC4F-393E-443F-B9A9-174D25406E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C572CC4F-393E-443F-B9A9-174D25406E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C572CC4F-393E-443F-B9A9-174D25406E8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{607F8F4F-087B-4FDB-B8BE-90AD631295A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{607F8F4F-087B-4FDB-B8BE-90AD631295A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{607F8F4F-087B-4FDB-B8BE-90AD631295A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{607F8F4F-087B-4FDB-B8BE-90AD631295A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{D3EA3754-0419-4686-B465-CDC30184EFB3} = {C7621EE6-2F67-4025-B3C2-061F320C87DA}
 		{A9872BB6-4F91-41DB-9737-B7AB23E7C92C} = {5B73689F-07AA-4797-A230-943DF77C9D88}
 		{C0D9C989-1AC8-4130-832F-7288809615D0} = {C7621EE6-2F67-4025-B3C2-061F320C87DA}
+		{607F8F4F-087B-4FDB-B8BE-90AD631295A8} = {C7621EE6-2F67-4025-B3C2-061F320C87DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F536F450-8F16-4780-B116-98E21151F647}
