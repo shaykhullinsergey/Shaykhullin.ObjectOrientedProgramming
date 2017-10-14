@@ -1,14 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shaykhullin.Lab2
+﻿namespace Shaykhullin.Lab2
 {
-  public class Tree<TData>
+  public class Tree<TData> : TreeNode<TData>
   {
-    public TreeNode<TData> Root { get; }
+    public Tree(TData data) : base(data)
+    {
+    }
+    
+    public void Add(TreeNode<TData> parent, TreeNode<TData> child)
+    {
+      child.AddTo(parent);
+    }
+
+    public void Remove(TreeNode<TData> node)
+    {
+      node.RemoveFromParent();
+    }
+
+    public void RemoveAndMoveChildrenToParent(TreeNode<TData> node)
+    {
+      node.RemoveAndMoveChildrenToParent();
+    }
+
+    public void Move(TreeNode<TData> node, TreeNode<TData> parent)
+    {
+      node.MoveTo(parent);
+    }
 
     public virtual TreeNode<TData> Create(TData data)
     {
