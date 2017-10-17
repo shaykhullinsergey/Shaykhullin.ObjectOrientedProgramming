@@ -5,7 +5,7 @@ using Shaykhullin.Lab2.Views;
 
 namespace Shaykhullin.Lab2
 {
-  static class Program
+  internal static class Program
   {
     [STAThread]
     static void Main()

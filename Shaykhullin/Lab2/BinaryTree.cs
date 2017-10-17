@@ -18,29 +18,35 @@ namespace Shaykhullin.Lab2
 
     private void AddRecursive(BinaryTreeNode<TData> parent, BinaryTreeNode<TData> node)
     {
-      if (Comparer(node.Data, parent.Data))
+      while(true)
       {
-        if (parent.Left == null)
+        if(Comparer(node.Data, parent.Data))
         {
-          parent.Left = node;
-          node.Parent = parent;
+          if(parent.Left == null)
+          {
+            parent.Left = node;
+            node.Parent = parent;
+          }
+          else
+          {
+            parent = parent.Left;
+            continue;
+          }
         }
         else
         {
-          AddRecursive(parent.Left, node);
+          if(parent.Right == null)
+          {
+            parent.Right = node;
+            node.Parent = parent;
+          }
+          else
+          {
+            parent = parent.Right;
+            continue;
+          }
         }
-      }
-      else
-      {
-        if (parent.Right == null)
-        {
-          parent.Right = node;
-          node.Parent = parent;
-        }
-        else
-        {
-          AddRecursive(parent.Right, node);
-        }
+        break;
       }
     }
 

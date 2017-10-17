@@ -43,6 +43,8 @@
       this.button9 = new System.Windows.Forms.Button();
       this.button10 = new System.Windows.Forms.Button();
       this.binaryTreeView = new System.Windows.Forms.TreeView();
+      this.renderListView = new System.Windows.Forms.ListBox();
+      this.button6 = new System.Windows.Forms.Button();
       this.tabControl1.SuspendLayout();
       this.tabPage1.SuspendLayout();
       this.tabPage2.SuspendLayout();
@@ -201,11 +203,31 @@
       this.binaryTreeView.TabIndex = 9;
       this.binaryTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.OnBinaryNodeSelected);
       // 
+      // listBox1
+      // 
+      this.renderListView.FormattingEnabled = true;
+      this.renderListView.Location = new System.Drawing.Point(654, 34);
+      this.renderListView.Name = "renderListView";
+      this.renderListView.Size = new System.Drawing.Size(284, 563);
+      this.renderListView.TabIndex = 1;
+      // 
+      // button6
+      // 
+      this.button6.Location = new System.Drawing.Point(765, 620);
+      this.button6.Name = "button6";
+      this.button6.Size = new System.Drawing.Size(75, 23);
+      this.button6.TabIndex = 2;
+      this.button6.Text = "button6";
+      this.button6.UseVisualStyleBackColor = true;
+      this.button6.Click += new System.EventHandler(this.OnRenderButtonClicked);
+      // 
       // MainView
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(660, 678);
+      this.ClientSize = new System.Drawing.Size(950, 678);
+      this.Controls.Add(this.button6);
+      this.Controls.Add(this.renderListView);
       this.Controls.Add(this.tabControl1);
       this.Name = "MainView";
       this.Text = "MainView";
@@ -233,5 +255,7 @@
     private System.Windows.Forms.Button button9;
     private System.Windows.Forms.Button button10;
     private System.Windows.Forms.TreeView binaryTreeView;
+    private System.Windows.Forms.ListBox renderListView;
+    private System.Windows.Forms.Button button6;
   }
 }

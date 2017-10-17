@@ -70,6 +70,7 @@ namespace Shaykhullin.Lab2.Views
         selected.ShowDialog();
       }
     }
+
     private void OnRemoveClicked(object sender, EventArgs e)
     {
       var node = leftTree.SelectedNode;
@@ -92,7 +93,8 @@ namespace Shaykhullin.Lab2.Views
 
       leftTree.SelectedNode = null;
     }
-    private void OnRemoveAndMoveChildrenClicked(object sender, System.EventArgs e)
+
+    private void OnRemoveAndMoveChildrenClicked(object sender, EventArgs e)
     {
       var node = leftTree.SelectedNode;
       if (node == null)
@@ -106,7 +108,7 @@ namespace Shaykhullin.Lab2.Views
       {
         tree = null;
       }
-
+      
       treeNode.RemoveAndMoveChildrenToParent();
       if(node.Parent != null)
       {
@@ -116,7 +118,7 @@ namespace Shaykhullin.Lab2.Views
         }
         else
         {
-          for (int i = node.Nodes.Count - 1; i >= 0; i--)
+          for (var i = node.Nodes.Count - 1; i >= 0; i--)
           {
             var child = node.Nodes[i];
 
@@ -134,6 +136,7 @@ namespace Shaykhullin.Lab2.Views
 
       leftTree.SelectedNode = null;
     }
+
     private void OnMoveClicked(object sender, EventArgs e)
     {
       var node = leftTree.SelectedNode;
@@ -169,6 +172,7 @@ namespace Shaykhullin.Lab2.Views
 
       prevNode = null;
     }
+
     private async void OnNodeSelected(object sender, MouseEventArgs e)
     {
       await Task.Delay(150);
@@ -188,15 +192,20 @@ namespace Shaykhullin.Lab2.Views
         var selected = new AddView();
         selected.button1.Click += (s, e) =>
         {
-          if (!int.TryParse(selected.textBox1.Text, out var test))
+          if (!int.TryParse(selected.textBox1.Text, out var _))
           {
             selected.label1.Text = "Node must be a number!";
           }
           else
           {
             binaryTree = new BinaryTree<TreeNode>(new TreeNode(selected.textBox1.Text),
-              (t1, t2) => int.Parse(t1.Text) < int.Parse(t2.Text));
-            binaryTree.Data.Tag = Guid.NewGuid();
+              (t1, t2) => int.Parse(t1.Text) < int.Parse(t2.Text))
+            {
+              Data =
+              {
+                Tag = Guid.NewGuid()
+              }
+            };
 
             binaryTreeView.Nodes.Add(binaryTree.Data);
             binaryTreeStatus.Text = $"Added: {binaryTree.Data.Text}";
@@ -210,14 +219,19 @@ namespace Shaykhullin.Lab2.Views
         var selected = new AddView();
         selected.button1.Click += (s, e) =>
         {
-          if (!int.TryParse(selected.textBox1.Text, out var test))
+          if (!int.TryParse(selected.textBox1.Text, out var _))
           {
             selected.label1.Text = "Node must be a number!";
           }
           else
           {
-            var treeNode = new BinaryTreeNode<TreeNode>(new TreeNode(selected.textBox1.Text));
-            treeNode.Data.Tag = Guid.NewGuid();
+            var treeNode = new BinaryTreeNode<TreeNode>(new TreeNode(selected.textBox1.Text))
+            {
+              Data =
+              {
+                Tag = Guid.NewGuid()
+              }
+            };
             binaryTree.Add(treeNode);
 
             binaryTreeView.Nodes.Clear();
@@ -231,6 +245,7 @@ namespace Shaykhullin.Lab2.Views
         selected.ShowDialog();
       }
     }
+
     private void OnBinaryRemoveClicked(object sender, EventArgs e)
     {
       var node = binaryTreeView.SelectedNode;
@@ -266,6 +281,12 @@ namespace Shaykhullin.Lab2.Views
     {
       await Task.Delay(150);
       binaryTreeStatus.Text = $"Selected: {binaryTreeView.SelectedNode?.Text}";
+    }
+
+    private void OnRenderButtonClicked(object sender, EventArgs e)
+    {
+      renderListView.Items.Clear();
+      renderListView.Items.AddRange(tree.Select(x => x.Data.Text).ToArray());
     }
   }
 }

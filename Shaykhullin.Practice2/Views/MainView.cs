@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Dynamic;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 using Shaykhullin.Shared.Practice1;

@@ -60,7 +60,7 @@ namespace Shaykhullin.Lab2
       RemoveFromParent();
       AddTo(parent);
     }
-
+    
     public IEnumerator<TreeNode<TData>> GetEnumerator()
     {
       yield return this;
