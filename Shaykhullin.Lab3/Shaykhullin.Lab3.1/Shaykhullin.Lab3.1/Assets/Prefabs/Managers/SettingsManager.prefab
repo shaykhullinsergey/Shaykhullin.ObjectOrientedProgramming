@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1178627418874888}
+  m_IsPrefabParent: 1
+--- !u!1 &1178627418874888
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4128146851122978}
+  - component: {fileID: 114972898570241196}
+  m_Layer: 0
+  m_Name: SettingsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4128146851122978
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1178627418874888}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.0340247, y: 0.21989964, z: -0.06663556}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114972898570241196
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1178627418874888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd4953ac6bd8a6d4491760c609066fc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundVolume: 10
+  minDistanceBetweenHydrants: 2
+  minStartHydrantCount: 5
+  maxStartHydrantCount: 8
+  minHydrantCapacity: 100
+  maxHydrantCapacity: 200
+  minTurnsToNextHydrant: 2
+  maxTurnsToNextHydrant: 5
+  minFillHydrantSpeed: 10
+  maxFillHydrantSpeed: 20
+  bonusPipeChance: 5
+  minStartAvaliablePipesCount: 3
+  maxStartAvaliablePipesCount: 6
+  minPipeLengthMin: 2
+  minPipeLengthMax: 4
+  maxPipeLengthMin: 5
+  maxPipeLengthMax: 12
+  minStreamPower: 30
+  maxStreamPower: 50
+  firstMiniGameTimeLimit: 15
+  secondMiniGameTimeLimit: 25
+  thirdMiniGameTimeLimit: 30
+  pipeItemSizeDelta: 84
+  settingsFileName: settings.xml
+  gameResultsFileName: gameResults.xml
+  pipeSprites:
+  - {fileID: 21300000, guid: a17b29b64fe78df45ac66bb44c7c9d1f, type: 3}
+  - {fileID: 21300000, guid: bca7a842ca332f4448c5d232f6beea15, type: 3}
+  - {fileID: 21300000, guid: 43b6bdae577b0e841ad05f28ea97b1cd, type: 3}
+  - {fileID: 21300000, guid: 5f9253cc3d9b17f4199f0a05acf07daa, type: 3}
+  - {fileID: 21300000, guid: bb86ee388abba48419ba2b67c89e378d, type: 3}
+  - {fileID: 21300000, guid: a6f4f20a5d47259499df06d1f0b00e14, type: 3}
+  - {fileID: 21300000, guid: 445523bfc792f144a870d4ae1407591f, type: 3}
+  - {fileID: 21300000, guid: 5eeb22ad16804f64caaeeae9e03877bf, type: 3}
+  - {fileID: 21300000, guid: 385e8c914019d7e48a23fffff3659859, type: 3}
+  - {fileID: 21300000, guid: ca0a4ebf7ab8e694a8ace8f397e36150, type: 3}
+  - {fileID: 21300000, guid: ace011e9f73fae34595bcfbc3afaf389, type: 3}
+  - {fileID: 21300000, guid: 84867afe45bda144face69f7e6b8e442, type: 3}
+  hydrantSprites:
+  - {fileID: 21300000, guid: 8a4bc9742abbd224d9c4315ad0e0911c, type: 3}
+  - {fileID: 21300000, guid: 3c0faef59fa27a84eb108931e1bb43d8, type: 3}
+  - {fileID: 21300000, guid: b12faaae7b3613748ab96b99ffb9139a, type: 3}
+  - {fileID: 21300000, guid: 16f2a6a5513096a40a50440b7428b4b2, type: 3}
+  positiveHydrantColor: {r: 0.85490197, g: 0.85490197, b: 0.85490197, a: 1}
+  negativeHydrantColor: {r: 0.9098039, g: 0.07450981, b: 0.07450981, a: 1}
+  pipeLengthOutOfRangeColor: {r: 1, g: 0, b: 0, a: 1}
+  pipeLengthInRangeColor: {r: 0.94847864, g: 1, b: 0.066176474, a: 1}
+  pipeConnectedColor: {r: 0.7941176, g: 0.7941176, b: 0.7941176, a: 1}
+  pipeActivatedColor: {r: 0, g: 1, b: 0.08965492, a: 1}
