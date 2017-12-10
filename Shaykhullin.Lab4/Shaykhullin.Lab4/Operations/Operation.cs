@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Shaykhullin.Operations
+﻿namespace Shaykhullin.Operations
 {
   public abstract class Operation
   {

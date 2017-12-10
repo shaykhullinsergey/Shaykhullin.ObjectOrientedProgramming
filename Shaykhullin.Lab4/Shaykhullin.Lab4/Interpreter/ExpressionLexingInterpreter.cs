@@ -2,23 +2,23 @@
 using System.Linq;
 using System.Collections.Generic;
 
-using Shaykhullin.Tokens;
+using Shaykhullin.Lexemes;
 using Shaykhullin.Parsers;
 
 namespace Shaykhullin
 {
 	public class ExpressionLexingInterpreter : ILexingContext
 	{
-		private Queue<Token> tokens;
-		public IEnumerable<TokenParser> parsers;
+		private Queue<Lexeme> Lexemes;
+		public IEnumerable<LexemeParser> parsers;
 
 		public ExpressionLexingInterpreter(string expression)
 		{
-      tokens = new Queue<Token>();
-			parsers = typeof(TokenParser).Assembly.GetTypes()
-				.Where(type => typeof(TokenParser).IsAssignableFrom(type))
+      Lexemes = new Queue<Lexeme>();
+			parsers = typeof(LexemeParser).Assembly.GetTypes()
+				.Where(type => typeof(LexemeParser).IsAssignableFrom(type))
 				.Where(type => !type.IsAbstract)
-				.Select(type => (TokenParser)Activator.CreateInstance(type))
+				.Select(type => (LexemeParser)Activator.CreateInstance(type))
 				.ToList();
       Expression = expression;
 		}
@@ -30,7 +30,7 @@ namespace Shaykhullin
     public string SubExpression => 
       Caret > Expression.Length ? null : Expression.Substring(Start, Caret - Start);
 
-		public Queue<Token> Interpret()
+		public Queue<Lexeme> Interpret()
 		{
       do
       {
@@ -43,16 +43,16 @@ namespace Shaykhullin
           throw new InvalidOperationException($"Error in {Caret} symbol");
         }
 
-        var token = parser.Parse(this);
+        var Lexeme = parser.Parse(this);
 
-        if(token != null && !(token is EmptyToken))
+        if(Lexeme != null && !(Lexeme is EmptyLexeme))
         {
-          tokens.Enqueue(token);
+          Lexemes.Enqueue(Lexeme);
         }
 
       } while (Caret < Expression.Length);
 
-      return tokens;
+      return Lexemes;
 		}
   }
 }

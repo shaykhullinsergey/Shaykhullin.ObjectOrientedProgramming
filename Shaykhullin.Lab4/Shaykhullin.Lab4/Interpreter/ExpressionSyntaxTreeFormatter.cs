@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Shaykhullin.Tokens;
+using Shaykhullin.Lexemes;
 using Shaykhullin.Operations;
 using OperationTree = Shaykhullin.Tree<Shaykhullin.Operations.Operation>;
 using Shaykhullin.OperationMappers;
@@ -18,18 +18,18 @@ namespace Shaykhullin
 
   public class ExpressionSyntaxTreeFormatter
   {
-    private Queue<Token> input;
+    private Queue<Lexeme> input;
     private Stack<Tree<Operation>> operations;
-    private IEnumerable<OperationMapper> operationMappers;
+    private IEnumerable<LexemeOperationMapper> operationMappers;
 
     public ExpressionSyntaxTreeFormatter(ExpressionInfixSortStationProcessor sortProcessor)
     {
       input = sortProcessor.SortStation();
       operations = new Stack<Tree<Operation>>();
-      operationMappers = typeof(OperationMapper).Assembly.GetTypes()
-        .Where(type => typeof(OperationMapper).IsAssignableFrom(type))
+      operationMappers = typeof(LexemeOperationMapper).Assembly.GetTypes()
+        .Where(type => typeof(LexemeOperationMapper).IsAssignableFrom(type))
         .Where(type => !type.IsAbstract)
-        .Select(type => (OperationMapper)Activator.CreateInstance(type))
+        .Select(type => (LexemeOperationMapper)Activator.CreateInstance(type))
         .ToList();
     }
 
@@ -37,9 +37,9 @@ namespace Shaykhullin
     {
       while (input.Count > 0)
       {
-        Token token = input.Dequeue();
+        Lexeme Lexeme = input.Dequeue();
 
-        var mapper = operationMappers.SingleOrDefault(s => s.IsSatisfied(token))
+        var mapper = operationMappers.SingleOrDefault(s => s.IsSatisfied(Lexeme))
           ?? throw new InvalidOperationException("Mapper not found");
 
         operations.Push(mapper.Parse(operations));

@@ -1,51 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Shaykhullin.Tokens;
-using Shaykhullin.TokenSorters;
+using Shaykhullin.Lexemes;
+using Shaykhullin.LexemeSorters;
 
 namespace Shaykhullin
 {
   public class ExpressionInfixSortStationProcessor
   {
-    private Queue<Token> input;
-    private Queue<Token> output;
-    private Stack<Token> stack;
-    private IEnumerable<TokenSorter> tokenSorters;
+    private Queue<Lexeme> input;
+    private Queue<Lexeme> output;
+    private Stack<Lexeme> stack;
+    private IEnumerable<LexemeSorter> LexemeSorters;
 
     public ExpressionInfixSortStationProcessor(ExpressionLexingInterpreter lexingInterpreter)
     {
       input = lexingInterpreter.Interpret();
-      output = new Queue<Token>();
-      stack = new Stack<Token>();
+      output = new Queue<Lexeme>();
+      stack = new Stack<Lexeme>();
 
-      tokenSorters = typeof(TokenSorter).Assembly.GetTypes()
-        .Where(type => typeof(TokenSorter).IsAssignableFrom(type))
+      LexemeSorters = typeof(LexemeSorter).Assembly.GetTypes()
+        .Where(type => typeof(LexemeSorter).IsAssignableFrom(type))
         .Where(type => !type.IsAbstract)
-        .Select(type => (TokenSorter)Activator.CreateInstance(type))
+        .Select(type => (LexemeSorter)Activator.CreateInstance(type))
         .ToList();
     }
 
-    public Queue<Token> SortStation()
+    public Queue<Lexeme> SortStation()
     {
-      Token prevToken = null;
+      Lexeme prevLexeme = null;
 
       while (input.Count > 0)
       {
-        Token token = input.Dequeue();
+        Lexeme Lexeme = input.Dequeue();
 
-        var sorter = tokenSorters.SingleOrDefault(s => s.IsSatisfied(token))
+        var sorter = LexemeSorters.SingleOrDefault(s => s.IsSatisfied(Lexeme))
           ?? throw new InvalidOperationException("Sorter not found");
         
-        sorter.Sort(token, prevToken, input, output, stack);
+        sorter.Sort(Lexeme, prevLexeme, input, output, stack);
 
-        prevToken = token;
+        prevLexeme = Lexeme;
       }
 
       while (stack.Count > 0)
       {
-        if (stack.Peek() is LeftBracketToken)
-          throw new InvalidOperationException("RIGHT BRACKET");
+        if (stack.Peek() is LeftParenthesisLexeme)
+          throw new InvalidOperationException("RIGHT Parenthesis");
 
         output.Enqueue(stack.Pop());
       }

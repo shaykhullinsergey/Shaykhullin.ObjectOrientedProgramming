@@ -1,30 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-using Shaykhullin.Tokens;
+using Shaykhullin.Lexemes;
 using Shaykhullin.Operations;
-using System;
 
 namespace Shaykhullin.OperationMappers
 {
-  public abstract class OperationMapper
+  public abstract class LexemeOperationMapper
   {
-    public abstract bool IsSatisfied(Token token);
+    public abstract bool IsSatisfied(Lexeme Lexeme);
     public abstract Tree<Operation> Parse(Stack<Tree<Operation>> operations);
   }
 
-  public abstract class OperationMapper<TToken, TOperation> : OperationMapper
-    where TToken : Token
+  public abstract class LexemeOperationMapper<TLexeme, TOperation> : LexemeOperationMapper
+    where TLexeme : Lexeme
     where TOperation : Operation
   {
-    public override bool IsSatisfied(Token token)
+    public override bool IsSatisfied(Lexeme Lexeme)
     {
-      return token is TToken;
+      return Lexeme is TLexeme;
     }
   }
 
-  public abstract class BinaryOperationMapper<TToken, TOperation> 
-    : OperationMapper<TToken, TOperation>
-      where TToken : Token
+  public abstract class BinaryLexemeOperationMapper<TLexeme, TOperation> 
+    : LexemeOperationMapper<TLexeme, TOperation>
+      where TLexeme : Lexeme
       where TOperation : Operation, new()
   {
     public override Tree<Operation> Parse(Stack<Tree<Operation>> operations)
@@ -43,9 +43,9 @@ namespace Shaykhullin.OperationMappers
     }
   }
 
-  public abstract class UnaryOperationMapper<TToken, TOperation>
-    : OperationMapper<TToken, TOperation>
-      where TToken : Token
+  public abstract class UnaryLexemeOperationMapper<TLexeme, TOperation>
+    : LexemeOperationMapper<TLexeme, TOperation>
+      where TLexeme : Lexeme
       where TOperation : Operation, new()
   {
     public override Tree<Operation> Parse(Stack<Tree<Operation>> operations)
