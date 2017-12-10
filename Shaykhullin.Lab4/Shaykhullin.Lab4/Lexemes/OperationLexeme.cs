@@ -38,4 +38,7 @@
   {
     public override int Order => 3;
   }
+  public class AndLexeme : OperationLexeme { }
+  public class OrLexeme : OperationLexeme { }
+  public class XorLexeme : OperationLexeme { }
 }
