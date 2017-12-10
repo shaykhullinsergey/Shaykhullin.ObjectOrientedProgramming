@@ -38,9 +38,9 @@ namespace Shaykhullin
     {
       while (input.Count > 0)
       {
-        Lexeme Lexeme = input.Dequeue();
+        var lexeme = input.Dequeue();
 
-        var mapper = operationMappers.SingleOrDefault(s => s.IsSatisfied(Lexeme))
+        var mapper = operationMappers.SingleOrDefault(s => s.IsSatisfied(lexeme))
           ?? throw new InvalidOperationException("Mapper not found");
 
         operations.Push(mapper.Map(operations));

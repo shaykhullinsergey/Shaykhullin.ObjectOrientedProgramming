@@ -36,12 +36,8 @@ namespace Shaykhullin
       {
         Start = Caret;
 
-        var parser = lexemeParsers.SingleOrDefault(p => p.IsSatisfied(this));
-
-        if(parser == null)
-        {
-          throw new InvalidOperationException($"Error in {Caret} symbol");
-        }
+        var parser = lexemeParsers.SingleOrDefault(p => p.IsSatisfied(this))
+          ?? throw new InvalidOperationException($"Error in {Caret} symbol");
 
         var lexeme = parser.Parse(this);
 
