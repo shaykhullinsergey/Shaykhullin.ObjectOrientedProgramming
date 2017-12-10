@@ -6,7 +6,7 @@ namespace Shaykhullin.Lab4.Sandbox
   {
     static void Main(string[] args)
     {
-      var expression = "(1) --";
+      var expression = "twelve";
 
       var result = new ExpressionInterpreter(
         processor: new ExpressionSyntaxTreeProcessor(

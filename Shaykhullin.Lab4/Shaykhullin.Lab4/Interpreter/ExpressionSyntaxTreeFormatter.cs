@@ -30,6 +30,7 @@ namespace Shaykhullin
       operationMappers = typeof(LexemeOperationMapper).Assembly.GetTypes()
         .Where(type => typeof(LexemeOperationMapper).IsAssignableFrom(type))
         .Where(type => !type.IsAbstract)
+        .OrderByDescending(type => type.CalculateBaseClasses())
         .Select(type => (LexemeOperationMapper)Activator.CreateInstance(type))
         .ToList();
     }
@@ -40,7 +41,8 @@ namespace Shaykhullin
       {
         var lexeme = input.Dequeue();
 
-        var mapper = operationMappers.SingleOrDefault(s => s.IsSatisfied(lexeme))
+        // Первый мапппер, попавший под условие от более конкретного к более базовому
+        var mapper = operationMappers.FirstOrDefault(s => s.IsSatisfied(lexeme))
           ?? throw new InvalidOperationException("Mapper not found");
 
         operations.Push(mapper.Map(operations));

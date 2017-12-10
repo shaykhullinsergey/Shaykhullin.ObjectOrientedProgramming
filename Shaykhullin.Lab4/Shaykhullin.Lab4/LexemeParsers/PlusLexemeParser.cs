@@ -6,4 +6,9 @@ namespace Shaykhullin.Parsers
   {
     public override string Name => "+";
   }
+
+  public class TwelveLexemeParser : LexemeParser<TwelveLexeme>
+  {
+    public override string Name => "twelve";
+  }
 }

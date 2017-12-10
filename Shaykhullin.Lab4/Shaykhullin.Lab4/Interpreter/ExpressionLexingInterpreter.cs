@@ -19,6 +19,7 @@ namespace Shaykhullin
 				.Where(type => typeof(LexemeParser).IsAssignableFrom(type))
 				.Where(type => !type.IsAbstract)
 				.Select(type => (LexemeParser)Activator.CreateInstance(type))
+        .OrderByDescending(parser => parser.Name?.Length)
 				.ToList();
       Expression = expression;
 		}
@@ -36,7 +37,7 @@ namespace Shaykhullin
       {
         Start = Caret;
 
-        var parser = lexemeParsers.SingleOrDefault(p => p.IsSatisfied(this))
+        var parser = lexemeParsers.FirstOrDefault(p => p.IsSatisfied(this))
           ?? throw new InvalidOperationException($"Error in {Caret} symbol");
 
         var lexeme = parser.Parse(this);

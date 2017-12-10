@@ -23,6 +23,7 @@ namespace Shaykhullin
       lexemeSorters = typeof(LexemeSorter).Assembly.GetTypes()
         .Where(type => typeof(LexemeSorter).IsAssignableFrom(type))
         .Where(type => !type.IsAbstract)
+        .OrderByDescending(type => type.CalculateBaseClasses())
         .Select(type => (LexemeSorter)Activator.CreateInstance(type))
         .ToList();
     }
@@ -35,7 +36,8 @@ namespace Shaykhullin
       {
         Lexeme Lexeme = input.Dequeue();
 
-        var sorter = lexemeSorters.SingleOrDefault(s => s.IsSatisfied(Lexeme))
+        // Первый сортер, попавший под условие и более конкретного к более базовому
+        var sorter = lexemeSorters.FirstOrDefault(s => s.IsSatisfied(Lexeme))
           ?? throw new InvalidOperationException("Sorter not found");
         
         sorter.Sort(Lexeme, prevLexeme, input, output, stack);
