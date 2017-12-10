@@ -5,8 +5,8 @@ using Shaykhullin.Operations;
 
 namespace Shaykhullin.OperationMappers
 {
-  public class DoubleLexemeOperationMapper
-    : LexemeOperationMapper<DoubleLexeme, DoubleValue>
+  public class BooleanLexemeOperationMapper
+    : LexemeOperationMapper<BooleanLexeme, DoubleValue>
   {
     private Lexeme Lexeme;
 
@@ -15,11 +15,11 @@ namespace Shaykhullin.OperationMappers
       return base.IsSatisfied((this.Lexeme = Lexeme));
     }
 
-    public override Tree<Operation> Parse(Stack<Tree<Operation>> operations)
+    public override Tree<Operation> Map(Stack<Tree<Operation>> operations)
     {
       return new Tree<Operation>
       {
-        Operation = new DoubleValue(((DoubleLexeme)Lexeme).Value)
+        Operation = new BooleanValue(((BooleanLexeme)Lexeme).Value)
       };
     }
   }

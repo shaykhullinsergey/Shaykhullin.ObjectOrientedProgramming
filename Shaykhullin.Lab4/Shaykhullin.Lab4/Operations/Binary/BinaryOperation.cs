@@ -1,6 +1,8 @@
 ﻿namespace Shaykhullin.Operations
 {
-  public abstract class BinaryOperation<TArgument, TReturn> : Operation
+  public abstract class BinaryOperation : Operation { }
+
+  public abstract class BinaryOperation<TArgument, TReturn> : BinaryOperation
   {
     public sealed override object Calculate(object[] args)
     {

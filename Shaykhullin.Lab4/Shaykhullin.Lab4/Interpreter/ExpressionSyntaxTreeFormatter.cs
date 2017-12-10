@@ -42,7 +42,7 @@ namespace Shaykhullin
         var mapper = operationMappers.SingleOrDefault(s => s.IsSatisfied(Lexeme))
           ?? throw new InvalidOperationException("Mapper not found");
 
-        operations.Push(mapper.Parse(operations));
+        operations.Push(mapper.Map(operations));
       }
 
       if(operations.Count == 1)
