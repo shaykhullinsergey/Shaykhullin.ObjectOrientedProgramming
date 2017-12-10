@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Shaykhullin.Lexemes;
 using Shaykhullin.LexemeSorters;
 
@@ -11,22 +12,22 @@ namespace Shaykhullin
     private Queue<Lexeme> input;
     private Queue<Lexeme> output;
     private Stack<Lexeme> stack;
-    private IEnumerable<LexemeSorter> LexemeSorters;
+    private IEnumerable<LexemeSorter> lexemeSorters;
 
     public ExpressionInfixSortStationProcessor(ExpressionLexingInterpreter lexingInterpreter)
     {
-      input = lexingInterpreter.Interpret();
+      input = lexingInterpreter.LexExpression();
       output = new Queue<Lexeme>();
       stack = new Stack<Lexeme>();
 
-      LexemeSorters = typeof(LexemeSorter).Assembly.GetTypes()
+      lexemeSorters = typeof(LexemeSorter).Assembly.GetTypes()
         .Where(type => typeof(LexemeSorter).IsAssignableFrom(type))
         .Where(type => !type.IsAbstract)
         .Select(type => (LexemeSorter)Activator.CreateInstance(type))
         .ToList();
     }
 
-    public Queue<Lexeme> SortStation()
+    public Queue<Lexeme> ToPostfixNotaition()
     {
       Lexeme prevLexeme = null;
 
@@ -34,7 +35,7 @@ namespace Shaykhullin
       {
         Lexeme Lexeme = input.Dequeue();
 
-        var sorter = LexemeSorters.SingleOrDefault(s => s.IsSatisfied(Lexeme))
+        var sorter = lexemeSorters.SingleOrDefault(s => s.IsSatisfied(Lexeme))
           ?? throw new InvalidOperationException("Sorter not found");
         
         sorter.Sort(Lexeme, prevLexeme, input, output, stack);

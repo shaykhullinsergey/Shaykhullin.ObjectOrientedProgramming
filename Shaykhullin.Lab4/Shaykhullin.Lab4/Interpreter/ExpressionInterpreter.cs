@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shaykhullin
+﻿namespace Shaykhullin
 {
   public class ExpressionInterpreter
   {
@@ -17,7 +11,7 @@ namespace Shaykhullin
 
     public object Interpret()
     {
-      return processor.CalcTree();
+      return processor.ExecuteOperaion();
     }
   }
 }

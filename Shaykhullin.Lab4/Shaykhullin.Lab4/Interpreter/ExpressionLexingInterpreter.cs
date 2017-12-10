@@ -9,13 +9,13 @@ namespace Shaykhullin
 {
 	public class ExpressionLexingInterpreter : ILexingContext
 	{
-		private Queue<Lexeme> Lexemes;
-		public IEnumerable<LexemeParser> parsers;
+		private Queue<Lexeme> lexemes;
+		public IEnumerable<LexemeParser> lexemeParsers;
 
 		public ExpressionLexingInterpreter(string expression)
 		{
-      Lexemes = new Queue<Lexeme>();
-			parsers = typeof(LexemeParser).Assembly.GetTypes()
+      lexemes = new Queue<Lexeme>();
+			lexemeParsers = typeof(LexemeParser).Assembly.GetTypes()
 				.Where(type => typeof(LexemeParser).IsAssignableFrom(type))
 				.Where(type => !type.IsAbstract)
 				.Select(type => (LexemeParser)Activator.CreateInstance(type))
@@ -30,29 +30,29 @@ namespace Shaykhullin
     public string SubExpression => 
       Caret > Expression.Length ? null : Expression.Substring(Start, Caret - Start);
 
-		public Queue<Lexeme> Interpret()
+		public Queue<Lexeme> LexExpression()
 		{
       do
       {
         Start = Caret;
 
-        var parser = parsers.SingleOrDefault(p => p.IsSatisfied(this));
+        var parser = lexemeParsers.SingleOrDefault(p => p.IsSatisfied(this));
 
         if(parser == null)
         {
           throw new InvalidOperationException($"Error in {Caret} symbol");
         }
 
-        var Lexeme = parser.Parse(this);
+        var lexeme = parser.Parse(this);
 
-        if(Lexeme != null && !(Lexeme is EmptyLexeme))
+        if(lexeme != null && !(lexeme is EmptyLexeme))
         {
-          Lexemes.Enqueue(Lexeme);
+          lexemes.Enqueue(lexeme);
         }
 
       } while (Caret < Expression.Length);
 
-      return Lexemes;
+      return lexemes;
 		}
   }
 }

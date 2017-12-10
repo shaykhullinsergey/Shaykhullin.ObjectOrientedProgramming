@@ -11,10 +11,10 @@ namespace Shaykhullin
 
     public ExpressionSyntaxTreeProcessor(ExpressionSyntaxTreeFormatter formatter)
     {
-      input = formatter.CreateSyntaxTree();
+      input = formatter.FormatOperation();
     }
 
-    public object CalcTree()
+    public object ExecuteOperaion()
     {
       return CalcTreeRecursive(input);
 

@@ -24,7 +24,8 @@ namespace Shaykhullin
 
     public ExpressionSyntaxTreeFormatter(ExpressionInfixSortStationProcessor sortProcessor)
     {
-      input = sortProcessor.SortStation();
+      input = sortProcessor.ToPostfixNotaition();
+
       operations = new Stack<Tree<Operation>>();
       operationMappers = typeof(LexemeOperationMapper).Assembly.GetTypes()
         .Where(type => typeof(LexemeOperationMapper).IsAssignableFrom(type))
@@ -33,7 +34,7 @@ namespace Shaykhullin
         .ToList();
     }
 
-    public Tree<Operation> CreateSyntaxTree()
+    public Tree<Operation> FormatOperation()
     {
       while (input.Count > 0)
       {
