@@ -34,15 +34,15 @@ namespace Shaykhullin
 
       while (input.Count > 0)
       {
-        Lexeme Lexeme = input.Dequeue();
+        var lexeme = input.Dequeue();
 
         // Первый сортер, попавший под условие и более конкретного к более базовому
-        var sorter = lexemeSorters.FirstOrDefault(s => s.IsSatisfied(Lexeme))
+        var sorter = lexemeSorters.FirstOrDefault(s => s.IsSatisfied(lexeme))
           ?? throw new InvalidOperationException("Sorter not found");
         
-        sorter.Sort(Lexeme, prevLexeme, input, output, stack);
+        sorter.Sort(lexeme, prevLexeme, input, output, stack);
 
-        prevLexeme = Lexeme;
+        prevLexeme = lexeme;
       }
 
       while (stack.Count > 0)

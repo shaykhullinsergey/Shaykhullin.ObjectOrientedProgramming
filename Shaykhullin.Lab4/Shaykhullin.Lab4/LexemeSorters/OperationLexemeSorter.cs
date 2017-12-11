@@ -6,9 +6,9 @@ namespace Shaykhullin.LexemeSorters
 {
   public class OperationLexemeSorter : LexemeSorter<OperationLexeme>
   {
-    public override bool IsSatisfied(Lexeme Lexeme)
+    public override bool IsSatisfied(Lexeme lexeme)
     {
-      return base.IsSatisfied(Lexeme) && !(Lexeme is PlusLexeme || Lexeme is MinusLexeme);
+      return base.IsSatisfied(lexeme) && !(lexeme is PlusLexeme || lexeme is MinusLexeme);
     }
 
     public override void Sort(Lexeme Lexeme, Lexeme prevLexeme, Queue<Lexeme> input, Queue<Lexeme> output, Stack<Lexeme> stack)
