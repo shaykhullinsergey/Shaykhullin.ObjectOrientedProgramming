@@ -6,9 +6,9 @@ namespace Shaykhullin.LexemeSorters
 {
   public class BooleanLexemeSorter : LexemeSorter<BooleanLexeme>
   {
-    public override void Sort(Lexeme Lexeme, Lexeme prevLexeme, Queue<Lexeme> input, Queue<Lexeme> output, Stack<Lexeme> stack)
+    public override void Sort(Lexeme lexeme, Lexeme prevLexeme, Queue<Lexeme> input, Queue<Lexeme> output, Stack<Lexeme> stack)
     {
-      output.Enqueue(Lexeme);
+      output.Enqueue(lexeme);
     }
   }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.0
+VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.Practice1", "Shaykhullin.Practice1\Shaykhullin.Practice1.csproj", "{010CD4E7-E921-4BFB-B014-F968D497F9D8}"
 EndProject
@@ -29,13 +29,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lab3", "Lab3", "{1403CAA4-C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lab4", "Lab4", "{23D71AAF-4B26-4269-B2D5-F7C965DED116}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.Lab4", "Shaykhullin.Lab4\Shaykhullin.Lab4\Shaykhullin.Lab4.csproj", "{7A465670-0314-428D-9E83-B39D8F0B6AC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shaykhullin.Lab4", "Shaykhullin.Lab4\Shaykhullin.Lab4\Shaykhullin.Lab4.csproj", "{7A465670-0314-428D-9E83-B39D8F0B6AC5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.Lab4.Tests", "Shaykhullin.Lab4\Shaykhullin.Lab4.Tests\Shaykhullin.Lab4.Tests.csproj", "{A2B028DF-07D3-4A9C-A0E6-00BC8550BD0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.Lab4.Frontend", "Shaykhullin.Lab4\Shaykhullin.Lab4.Frontend\Shaykhullin.Lab4.Frontend.csproj", "{E42A7A20-96F4-4764-905F-6E2799B2DC32}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shaykhullin.Lab4.Sandbox", "Shaykhullin.Lab4\Shaykhullin.Lab4.Sandbox\Shaykhullin.Lab4.Sandbox.csproj", "{930E5ACD-5C78-429F-BC48-7D67DFD61CDA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lab5", "Lab5", "{4706D2FD-7008-4D85-AC26-07AC248B2971}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.Lab5.Client", "Shaykhullin.Lab5\Shaykhullin.Lab5.Client\Shaykhullin.Lab5.Client.csproj", "{20AC63C3-BB85-48CB-9343-91DF933810D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.Lab5.Server", "Shaykhullin.Lab5\Shaykhullin.Lab5.Server\Shaykhullin.Lab5.Server.csproj", "{2BC70839-B5E7-4BEA-9223-862504807E41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +93,14 @@ Global
 		{930E5ACD-5C78-429F-BC48-7D67DFD61CDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{930E5ACD-5C78-429F-BC48-7D67DFD61CDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{930E5ACD-5C78-429F-BC48-7D67DFD61CDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20AC63C3-BB85-48CB-9343-91DF933810D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20AC63C3-BB85-48CB-9343-91DF933810D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20AC63C3-BB85-48CB-9343-91DF933810D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20AC63C3-BB85-48CB-9343-91DF933810D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BC70839-B5E7-4BEA-9223-862504807E41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BC70839-B5E7-4BEA-9223-862504807E41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BC70839-B5E7-4BEA-9223-862504807E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BC70839-B5E7-4BEA-9223-862504807E41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +120,9 @@ Global
 		{A2B028DF-07D3-4A9C-A0E6-00BC8550BD0F} = {23D71AAF-4B26-4269-B2D5-F7C965DED116}
 		{E42A7A20-96F4-4764-905F-6E2799B2DC32} = {23D71AAF-4B26-4269-B2D5-F7C965DED116}
 		{930E5ACD-5C78-429F-BC48-7D67DFD61CDA} = {23D71AAF-4B26-4269-B2D5-F7C965DED116}
+		{4706D2FD-7008-4D85-AC26-07AC248B2971} = {C7621EE6-2F67-4025-B3C2-061F320C87DA}
+		{20AC63C3-BB85-48CB-9343-91DF933810D1} = {4706D2FD-7008-4D85-AC26-07AC248B2971}
+		{2BC70839-B5E7-4BEA-9223-862504807E41} = {4706D2FD-7008-4D85-AC26-07AC248B2971}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F536F450-8F16-4780-B116-98E21151F647}

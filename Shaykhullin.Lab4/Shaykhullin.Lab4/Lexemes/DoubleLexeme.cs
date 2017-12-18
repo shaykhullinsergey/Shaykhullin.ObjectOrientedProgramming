@@ -8,18 +8,6 @@ namespace Shaykhullin.Lexemes
     {
     }
   }
-  public class TwelveLexeme : DoubleLexeme
-  {
-    public TwelveLexeme() : base("12")
-    {
-    }
-  }
-  public class ElevenLexeme : DoubleLexeme
-  {
-    public ElevenLexeme() : base("11")
-    {
-    }
-  }
   public class PiLexeme : DoubleLexeme
   {
     public PiLexeme() : base(Math.PI.ToString()) { }

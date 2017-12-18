@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Shaykhullin.Lexemes;
 using Shaykhullin.Operations;
-using OperationTree = Shaykhullin.Tree<Shaykhullin.Operations.Operation>;
 using Shaykhullin.OperationMappers;
 using System.Linq;
 
