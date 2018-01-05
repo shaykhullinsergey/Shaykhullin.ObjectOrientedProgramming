@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.Practice1", "Shaykhullin.Practice1\Shaykhullin.Practice1.csproj", "{010CD4E7-E921-4BFB-B014-F968D497F9D8}"
 EndProject
@@ -41,7 +41,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lab5", "Lab5", "{4706D2FD-7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.Lab5.Client", "Shaykhullin.Lab5\Shaykhullin.Lab5.Client\Shaykhullin.Lab5.Client.csproj", "{20AC63C3-BB85-48CB-9343-91DF933810D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.Lab5.Server", "Shaykhullin.Lab5\Shaykhullin.Lab5.Server\Shaykhullin.Lab5.Server.csproj", "{2BC70839-B5E7-4BEA-9223-862504807E41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shaykhullin.Lab5.Server", "Shaykhullin.Lab5\Shaykhullin.Lab5.Server\Shaykhullin.Lab5.Server.csproj", "{2BC70839-B5E7-4BEA-9223-862504807E41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.RoslynWrapper", "Shaykhullin.RoslynWrapper\Shaykhullin.RoslynWrapper.csproj", "{0F7C4554-64BB-4154-984D-276D04CE1D5A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lab6", "Lab6", "{4FACD1DA-44C8-40D3-B812-18CC75F32A0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shaykhullin.Lab6", "Shaykhullin.Lab6\Shaykhullin.Lab6.csproj", "{74552892-0F97-4245-9359-94EF1E60B943}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +107,14 @@ Global
 		{2BC70839-B5E7-4BEA-9223-862504807E41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BC70839-B5E7-4BEA-9223-862504807E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BC70839-B5E7-4BEA-9223-862504807E41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F7C4554-64BB-4154-984D-276D04CE1D5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F7C4554-64BB-4154-984D-276D04CE1D5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F7C4554-64BB-4154-984D-276D04CE1D5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F7C4554-64BB-4154-984D-276D04CE1D5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74552892-0F97-4245-9359-94EF1E60B943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74552892-0F97-4245-9359-94EF1E60B943}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74552892-0F97-4245-9359-94EF1E60B943}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74552892-0F97-4245-9359-94EF1E60B943}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,6 +137,8 @@ Global
 		{4706D2FD-7008-4D85-AC26-07AC248B2971} = {C7621EE6-2F67-4025-B3C2-061F320C87DA}
 		{20AC63C3-BB85-48CB-9343-91DF933810D1} = {4706D2FD-7008-4D85-AC26-07AC248B2971}
 		{2BC70839-B5E7-4BEA-9223-862504807E41} = {4706D2FD-7008-4D85-AC26-07AC248B2971}
+		{4FACD1DA-44C8-40D3-B812-18CC75F32A0C} = {C7621EE6-2F67-4025-B3C2-061F320C87DA}
+		{74552892-0F97-4245-9359-94EF1E60B943} = {4FACD1DA-44C8-40D3-B812-18CC75F32A0C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F536F450-8F16-4780-B116-98E21151F647}

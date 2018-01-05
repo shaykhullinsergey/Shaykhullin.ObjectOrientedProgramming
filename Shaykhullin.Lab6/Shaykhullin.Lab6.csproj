@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{74552892-0F97-4245-9359-94EF1E60B943}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Shaykhullin.Lab6</RootNamespace>
+    <AssemblyName>Shaykhullin.Lab6</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeAnalysis, Version=2.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.2.6.1\lib\netstandard1.3\Microsoft.CodeAnalysis.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=2.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.2.6.1\lib\netstandard1.3\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.AppContext">
+      <HintPath>..\packages\System.AppContext.4.3.0\lib\net463\System.AppContext.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.3.1\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Console">
+      <HintPath>..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Diagnostics.FileVersionInfo">
+      <HintPath>..\packages\System.Diagnostics.FileVersionInfo.4.3.0\lib\net46\System.Diagnostics.FileVersionInfo.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Diagnostics.StackTrace, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.StackTrace.4.3.0\lib\net46\System.Diagnostics.StackTrace.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO">
+      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem">
+      <HintPath>..\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Linq">
+      <HintPath>..\packages\System.Linq.4.3.0\lib\net463\System.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Linq.Expressions">
+      <HintPath>..\packages\System.Linq.Expressions.4.3.0\lib\net463\System.Linq.Expressions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Reflection">
+      <HintPath>..\packages\System.Reflection.4.3.0\lib\net462\System.Reflection.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata, Version=1.4.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.Metadata.1.4.2\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Extensions">
+      <HintPath>..\packages\System.Runtime.Extensions.4.3.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices">
+      <HintPath>..\packages\System.Runtime.InteropServices.4.3.0\lib\net463\System.Runtime.InteropServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.4.3.0\lib\net46\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Thread">
+      <HintPath>..\packages\System.Threading.Thread.4.3.0\lib\net46\System.Threading.Thread.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ValueTuple">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.ReaderWriter">
+      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.XmlDocument">
+      <HintPath>..\packages\System.Xml.XmlDocument.4.3.0\lib\net46\System.Xml.XmlDocument.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.XPath">
+      <HintPath>..\packages\System.Xml.XPath.4.3.0\lib\net46\System.Xml.XPath.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.XPath.XDocument, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.XPath.XDocument.4.3.0\lib\net46\System.Xml.XPath.XDocument.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\BuildCommand.cs" />
+    <Compile Include="Commands\ControlEnterCommand.cs" />
+    <Compile Include="Commands\ControlXCommand.cs" />
+    <Compile Include="Commands\LeftCurlyBracketCommand.cs" />
+    <Compile Include="Commands\LeftRoundBracketCommand.cs" />
+    <Compile Include="Commands\RunCommand.cs" />
+    <Compile Include="Commands\ShiftEnterCommand.cs" />
+    <Compile Include="Core\KeyState.cs" />
+    <Compile Include="Core\ModelView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Highlighter\Functions\FunctionHighlighter.cs" />
+    <Compile Include="Highlighter\Highlighter.cs" />
+    <Compile Include="Highlighter\Keywords\AbstractHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\AddHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\AsHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\BaseHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\BoolHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\BreakHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ByteHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\CaseHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\CatchHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\CharHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\CheckedHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ClassHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ConstHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ContinueHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\DecimalHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\DefaultHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\DelegateHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\DoHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\DoubleHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ElseHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\EnumHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\EventHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ExplicitHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ExternHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\FalseHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\FinallyHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\FixedHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\FloatHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ForeachHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ForHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\GetHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\GlobalHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\GotoHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\IfHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ImplicitHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\InHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\InterfaceHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\InternalHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\IntHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\IsHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\KeywordHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\LockHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\LongHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\NamespaceHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\NewHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\NullHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ObjectHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\OperatorHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\OutHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\OverrideHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ParamsHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\PartialHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\PrivateHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ProtectedHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\PublicHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ReadonlyHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\RefHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\RemoveHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ReturnHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\SbyteHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\SealedHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\SetHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ShortHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\SizeofHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\StackallocHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\StaticHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\StringHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\StructHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\SwitchHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ThisHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ThrowHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\TrueHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\TryHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\TypeofHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\UintHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\UlongHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\UncheckedHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\UnsafeHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\UshortHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\UsingHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\ValueHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\VarHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\VirtualHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\VoidHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\VolatileHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\WhereHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\WhileHighlighter.cs" />
+    <Compile Include="Highlighter\Keywords\YieldHighlighter.cs" />
+    <Compile Include="ViewModels\CodeEditorViewModel.cs" />
+    <Compile Include="Views\CodeEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CodeEditor.Designer.cs">
+      <DependentUpon>CodeEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Views\CodeEditor.resx">
+      <DependentUpon>CodeEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shaykhullin.RoslynWrapper\Shaykhullin.RoslynWrapper.csproj">
+      <Project>{0f7c4554-64bb-4154-984d-276d04ce1d5a}</Project>
+      <Name>Shaykhullin.RoslynWrapper</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
