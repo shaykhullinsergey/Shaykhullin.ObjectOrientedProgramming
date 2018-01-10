@@ -162,6 +162,7 @@
     <Compile Include="Commands\BuildCommand.cs" />
     <Compile Include="Commands\ControlEnterCommand.cs" />
     <Compile Include="Commands\ControlXCommand.cs" />
+    <Compile Include="Commands\EnterBracketCommand.cs" />
     <Compile Include="Commands\LeftCurlyBracketCommand.cs" />
     <Compile Include="Commands\LeftRoundBracketCommand.cs" />
     <Compile Include="Commands\RunCommand.cs" />
