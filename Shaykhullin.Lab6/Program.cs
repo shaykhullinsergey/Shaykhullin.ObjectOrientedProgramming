@@ -3,17 +3,14 @@ using System.Windows.Forms;
 
 namespace Shaykhullin.Lab6
 {
-  static class Program
-  {
-    /// <summary>
-    /// The main entry point for the application.
-    /// </summary>
-    [STAThread]
-    static void Main()
-    {
-      Application.EnableVisualStyles();
-      Application.SetCompatibleTextRenderingDefault(false);
-      Application.Run(new CodeEditor());
-    }
-  }
+	internal static class Program
+	{
+		[STAThread]
+		private static void Main()
+		{
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+			Application.Run(new CodeEditor());
+		}
+	}
 }

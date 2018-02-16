@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using Microsoft.CodeAnalysis;
 using Shaykhullin.RoslynWrapper;
 
@@ -33,24 +35,24 @@ namespace Shaykhullin.Lab6.Commands
         : code.Lines.Skip(start).Take(end - start + 1).ToArray();
 
       var assembly = new AssemblyComposer(
-        new CSharpSyntaxTreeCompiler(
-          syntaxTreeAnalyzer: new CSharpSyntaxTreeAnalyzer(GenerateTemplate(executionCode)),
-          referencedAssemblies: new[]
-          {
-            typeof(System.Object).Assembly,
-            typeof(System.Collections.Generic.IEnumerable<>).Assembly,
-            typeof(System.ComponentModel.ArrayConverter).Assembly,
-            typeof(System.Data.Constraint).Assembly,
-            typeof(System.Drawing.Bitmap).Assembly,
-            typeof(System.Linq.Enumerable).Assembly,
-            typeof(System.Text.StringBuilder).Assembly,
-            typeof(System.Threading.Tasks.Task).Assembly,
-            typeof(System.Windows.Forms.Form).Assembly
-          },
-          optimizationLevel: OptimizationLevel.Debug))
+          new CSharpSyntaxTreeCompiler(
+            new CSharpSyntaxTreeAnalyzer(GenerateTemplate(executionCode)),
+            new[]
+            {
+              typeof(object).Assembly,
+              typeof(IEnumerable<>).Assembly,
+              typeof(ArrayConverter).Assembly,
+              typeof(Constraint).Assembly,
+              typeof(Bitmap).Assembly,
+              typeof(Enumerable).Assembly,
+              typeof(StringBuilder).Assembly,
+              typeof(Task).Assembly,
+              typeof(Form).Assembly
+            },
+            OptimizationLevel.Debug))
         .ComposeAssembly();
 
-      if(assembly.Success)
+      if (assembly.Success)
       {
         EvaluateMethod(assembly.Assembly);
       }
@@ -70,10 +72,10 @@ namespace Shaykhullin.Lab6.Commands
       try
       {
         method.Invoke(null,
-        new object[]
-        {
-          (Action<object>)(obj => CodeEditor.OutputWindow.AppendText(obj.ToString() + "\n")),
-        });
+          new object[]
+          {
+            (Action<object>)(obj => CodeEditor.OutputWindow.AppendText(obj.ToString() + "\n"))
+          });
       }
       catch (Exception e)
       {
@@ -101,7 +103,7 @@ namespace Shaykhullin.Lab6.Commands
         editor.SelectionStart = selected;
         editor.SelectionFont = new Font(editor.SelectionFont, FontStyle.Regular);
 
-        CodeEditor.OutputWindow.AppendText(error.ToString() + "\n");
+        CodeEditor.OutputWindow.AppendText(error + "\n");
       }
     }
 
@@ -120,17 +122,17 @@ namespace Shaykhullin.Lab6.Commands
 
       IEnumerable<string> DetectTypes()
       {
-        bool typeFound = false;
-        int paranthesis = 0;
+        var typeFound = false;
+        var paranthesis = 0;
 
-        for (int i = 0; i < codeLines.Length; i++)
+        for (var i = 0; i < codeLines.Length; i++)
         {
           var line = codeLines[i];
 
-          if(line.Contains("delegate") 
-            && !line.Contains("{")
-            && i + 1 < codeLines.Length
-            && !codeLines[i + 1].Contains("{"))
+          if (line.Contains("delegate")
+              && !line.Contains("{")
+              && i + 1 < codeLines.Length
+              && !codeLines[i + 1].Contains("{"))
           {
             yield return line;
           }
@@ -140,27 +142,29 @@ namespace Shaykhullin.Lab6.Commands
             typeFound = true;
           }
 
-          if(typeFound)
+          if (typeFound)
           {
-            var lineDifference = line.Where(x => x == '{').Count() 
-              - line.Where(x => x == '}').Count();
+            var lineDifference = line.Where(x => x == '{').Count()
+                                 - line.Where(x => x == '}').Count();
 
             paranthesis += lineDifference;
 
             yield return line;
 
-            if (!(HasType(line)) && paranthesis == 0)
+            if (!HasType(line) && paranthesis == 0)
             {
               typeFound = false;
             }
           }
         }
 
-        bool HasType(string line) => 
-          line.Contains("class")
+        bool HasType(string line)
+        {
+          return line.Contains("class")
             || line.Contains("interface")
             || line.Contains("enum")
             || line.Contains("struct");
+        }
       }
     }
 
@@ -168,7 +172,7 @@ namespace Shaykhullin.Lab6.Commands
     {
       Task.Run(() =>
       {
-        for (int i = 0; i < 10; i++)
+        for (var i = 0; i < 10; i++)
         {
           CodeEditor.ProgressBar.PerformStep();
           Thread.Sleep(50);

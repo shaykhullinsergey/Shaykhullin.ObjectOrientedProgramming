@@ -1,0 +1,500 @@
+	{
+		public override string Keyword => "catch";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class CharHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "char";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class CheckedHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "checked";
+	}
+}
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6
+{
+	public class ClassHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "class ";
+
+		public override void Apply(RichTextBox editor)
+		{
+			base.Apply(editor);
+
+			var count = editor.Text.Substring(editor.SelectionStart)
+				.TakeWhile(x => x != ' ' && x != ':' && x != '\n' && x != '{' && x != '<')
+				.Count();
+
+			editor.SelectionLength = count;
+			editor.SelectionColor = Color.MediumAquamarine;
+			editor.SelectionStart += count;
+			editor.SelectionLength = 0;
+		}
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ConstHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "const";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ContinueHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "continue";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class DecimalHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "decimal";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class DefaultHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "default";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class DelegateHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "delegate";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class DoHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "do";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class DoubleHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "double";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ElseHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "else";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class EnumHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "enum";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class EventHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "event";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ExplicitHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "explicit";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ExternHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "extern";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class FalseHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "false";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class FinallyHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "finally";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class FixedHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "fixed";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class FloatHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "float";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ForeachHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "foreach";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ForHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "for";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class GetHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "get";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class GlobalHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "global";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class GotoHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "goto";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class IfHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "if";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ImplicitHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "implicit";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class InHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "in ";
+	}
+}
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6
+{
+	public class InterfaceHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "interface";
+
+		public override void Apply(RichTextBox editor)
+		{
+			base.Apply(editor);
+
+			var count = editor.Text.Substring(editor.SelectionStart)
+				.TakeWhile(x => x != ' ' && x != ':' && x != '\n' && x != '{' && x != '<')
+				.Count();
+
+			editor.SelectionLength = count;
+			editor.SelectionColor = Color.FromArgb(245, 255, 158);
+			editor.SelectionStart += count;
+			editor.SelectionLength = 0;
+		}
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class InternalHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "internal";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class IntHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "int";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class IsHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "is";
+	}
+}
+using System.Drawing;
+
+namespace Shaykhullin.Lab6
+{
+	public abstract class KeywordHighlighter : Highlighter
+	{
+		public sealed override Color Color { get; } = Color.FromArgb(59, 131, 247);
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class LockHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "lock";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class LongHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "long";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class NamespaceHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "namespace";
+	}
+}
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6
+{
+	public class NewHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "new";
+
+		public override void Apply(RichTextBox editor)
+		{
+			base.Apply(editor);
+
+			var count = editor.Text.Substring(editor.SelectionStart)
+				.TakeWhile(x => x != ' ' && x != '[' && x != '\n' && x != '{' && x != '(')
+				.Count();
+
+			editor.SelectionLength = count;
+			editor.SelectionColor = Color.MediumAquamarine;
+			editor.SelectionStart += count;
+			editor.SelectionLength = 0;
+		}
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class NullHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "null";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ObjectHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "object";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class OperatorHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "operator";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class OutHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "out";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class OverrideHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "override";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ParamsHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "params ";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class PartialHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "partial";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class PrivateHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "private";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ProtectedHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "protected";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class PublicHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "public";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ReadonlyHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "readonly";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class RefHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "ref";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class RemoveHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "remove";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ReturnHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "return";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class SbyteHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "sbyte";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class SealedHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "sealed";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class SetHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "set";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ShortHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "short";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class SizeofHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "sizeof";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class StackallocHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "stackalloc";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class StaticHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "static";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class StringHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "string";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class StructHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "struct";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class SwitchHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "switch";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ThisHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "this";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ThrowHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "throw";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class TrueHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "true";
+	}

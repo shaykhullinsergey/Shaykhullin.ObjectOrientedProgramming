@@ -1,7 +1,7 @@
 ﻿namespace Shaykhullin.Lab6
 {
-  public class RefHighlighter : KeywordHighlighter
-  {
-    public override string Keyword => "ref ";
-  }
+	public class RefHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "ref";
+	}
 }

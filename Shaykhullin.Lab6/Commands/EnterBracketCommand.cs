@@ -12,9 +12,10 @@ namespace Shaykhullin.Lab6.Commands
 		public override void Apply(RichTextBox code)
 		{
 			var selected = code.SelectionStart;
-			if(code.Text.Length != selected 
-			   && code.Text[selected - 1] == '{' 
-			   && code.Text[selected] == '}')
+
+			if (code.Text.Length != selected
+			    && code.Text[selected - 1] == '{'
+			    && code.Text[selected] == '}')
 			{
 				Task.Run(() =>
 				{

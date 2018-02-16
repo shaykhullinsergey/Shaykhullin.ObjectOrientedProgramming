@@ -1,0 +1,500 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace GeneratedNamespace
+{
+  public static class GeneratedClass
+  {
+    private static Action<object> WriteLine;
+
+    public static void GeneratedMethod(Action<object> WriteLine)
+    {
+      GeneratedClass.WriteLine = WriteLine;
+
+/*METHODS*/
+    }
+
+/*TYPES*/
+  }
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class BuildCommand : Command
+	{
+		public override Keys Key => Keys.B;
+		public override bool RequireControl => true;
+		public override bool RequireShift => true;
+
+		public override void Apply(RichTextBox code)
+		{
+			MessageBox.Show("Building");
+		}
+	}
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public abstract class Command
+	{
+		public virtual bool RequireControl { get; }
+		public virtual bool RequireShift { get; }
+		public virtual bool RequireAlt { get; }
+		public abstract Keys Key { get; }
+
+		public bool IsSatisfied(Keys key, KeyState state)
+		{
+			return Key == key
+			       && RequireControl == state.ControlPressed
+			       && RequireShift == state.ShiftPressed
+			       && RequireAlt == state.AltPressed;
+		}
+
+		public abstract void Apply(RichTextBox code);
+	}
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class ControlEnterCommand : Command
+	{
+		public override Keys Key => Keys.Enter;
+		public override bool RequireControl => true;
+
+		public override void Apply(RichTextBox code)
+		{
+			var shiftAmount = 0;
+
+			for (var i = code.SelectionStart - 1; i > 0; i--)
+			{
+				if (code.Text[i] == '\n')
+				{
+					break;
+				}
+
+				shiftAmount++;
+			}
+
+			code.SelectionStart -= shiftAmount + 1;
+		}
+	}
+}
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class ControlXCommand : Command
+	{
+		public override Keys Key => Keys.X;
+		public override bool RequireControl => true;
+
+		public override void Apply(RichTextBox code)
+		{
+			var lineNumber = code.GetLineFromCharIndex(code.SelectionStart);
+
+			var selection = code.SelectionStart;
+			code.Lines = ExceptIndex().ToArray();
+			code.SelectionStart = selection;
+
+			IEnumerable<string> ExceptIndex()
+			{
+				for (var i = 0; i < code.Lines.Length; i++)
+				{
+					if (i != lineNumber)
+					{
+						yield return code.Lines[i];
+					}
+				}
+			}
+		}
+	}
+}
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class EnterBracketCommand : Command
+	{
+		public override Keys Key => Keys.Enter;
+
+		public override void Apply(RichTextBox code)
+		{
+			var selected = code.SelectionStart;
+
+			if (code.Text.Length != selected
+			    && code.Text[selected - 1] == '{'
+			    && code.Text[selected] == '}')
+			{
+				Task.Run(() =>
+				{
+					CodeEditor.LockWindowUpdate(code.Handle);
+					Thread.Sleep(70);
+					code.Text = code.Text.Insert(selected + 1, "\t\n");
+					code.SelectionStart = selected + 2;
+					CodeEditor.LockWindowUpdate(IntPtr.Zero);
+				});
+			}
+		}
+	}
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class LeftCurlyBracketCommand : Command
+	{
+		public override Keys Key => Keys.OemOpenBrackets;
+		public override bool RequireShift => true;
+
+		public override void Apply(RichTextBox code)
+		{
+			var selected = code.SelectionStart;
+			code.Text = code.Text.Insert(code.SelectionStart, "}");
+			code.SelectionStart = selected;
+		}
+	}
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class LeftRoundBracketCommand : Command
+	{
+		public override Keys Key => Keys.D9;
+		public override bool RequireShift => true;
+
+		public override void Apply(RichTextBox code)
+		{
+			var selected = code.SelectionStart;
+			code.Text = code.Text.Insert(code.SelectionStart, ")");
+			code.SelectionStart = selected;
+		}
+	}
+}
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Microsoft.CodeAnalysis;
+using Shaykhullin.RoslynWrapper;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class RunCommand : Command
+	{
+		public override Keys Key => Keys.F5;
+		public override bool RequireControl => true;
+
+		public override void Apply(RichTextBox code)
+		{
+			CodeEditor.OutputWindow.Text = "";
+			CodeEditor.OutputWindow.Focus();
+			CodeEditor.OutputWindow.Visible = true;
+			RunProgressBar();
+
+			var start = code.GetLineFromCharIndex(code.SelectionStart);
+			var end = code.GetLineFromCharIndex(code.SelectionStart + code.SelectionLength);
+
+			var executionCode = code.SelectionLength == 0
+				? code.Lines
+				: code.Lines.Skip(start).Take(end - start + 1).ToArray();
+
+			var assembly = new AssemblyComposer(
+					new CSharpSyntaxTreeCompiler(
+						new CSharpSyntaxTreeAnalyzer(GenerateTemplate(executionCode)),
+						new[]
+						{
+							typeof(object).Assembly,
+							typeof(IEnumerable<>).Assembly,
+							typeof(ArrayConverter).Assembly,
+							typeof(Constraint).Assembly,
+							typeof(Bitmap).Assembly,
+							typeof(Enumerable).Assembly,
+							typeof(StringBuilder).Assembly,
+							typeof(Task).Assembly,
+							typeof(Form).Assembly
+						},
+						OptimizationLevel.Debug))
+				.ComposeAssembly();
+
+			if (assembly.Success)
+			{
+				EvaluateMethod(assembly.Assembly);
+			}
+			else
+			{
+				EvaluateErrors(assembly.Errors);
+			}
+		}
+
+		private void EvaluateMethod(Assembly assembly)
+		{
+			CodeEditor.OutputWindow.AppendText("Build success\n");
+
+			var type = assembly.GetType("GeneratedNamespace.GeneratedClass");
+			var method = type.GetMethod("GeneratedMethod", BindingFlags.Public | BindingFlags.Static);
+
+			try
+			{
+				method.Invoke(null,
+					new object[]
+					{
+						(Action<object>)(obj => CodeEditor.OutputWindow.AppendText(obj.ToString() + "\n"))
+					});
+			}
+			catch (Exception e)
+			{
+				CodeEditor.OutputWindow.AppendText("Exception: " + e.InnerException.Message + "\n");
+			}
+		}
+
+		private void EvaluateErrors(IEnumerable<Diagnostic> errors)
+		{
+			CodeEditor.OutputWindow.AppendText("Build failed\n");
+
+			foreach (var error in errors)
+			{
+				var editor = CodeEditor.Editor;
+				var selected = editor.SelectionStart;
+
+				var normalizedStart = 0; //error.Location.SourceSpan.Start;
+
+				editor.Select(normalizedStart, error.Location.SourceSpan.Length + 1);
+				editor.SelectionFont = new Font(editor.SelectionFont, FontStyle.Underline);
+
+				editor.Select(normalizedStart, error.Location.SourceSpan.Length + 1);
+				editor.SelectionColor = Color.Red;
+
+				editor.SelectionStart = selected;
+				editor.SelectionFont = new Font(editor.SelectionFont, FontStyle.Regular);
+
+				CodeEditor.OutputWindow.AppendText(error + "\n");
+			}
+		}
+
+		private string GenerateTemplate(string[] codeLines)
+		{
+			var template = File.ReadAllText(
+				Path.Combine(Environment.CurrentDirectory, "template.cs"));
+
+			var types = DetectTypes().ToList();
+			var methods = codeLines.Except(types);
+
+			template = template.Replace("/*METHODS*/", string.Join("\n", methods));
+			template = template.Replace("/*TYPES*/", string.Join("\n", types));
+
+			return template;
+
+			IEnumerable<string> DetectTypes()
+			{
+				var typeFound = false;
+				var paranthesis = 0;
+
+				for (var i = 0; i < codeLines.Length; i++)
+				{
+					var line = codeLines[i];
+
+					if (line.Contains("delegate")
+					    && !line.Contains("{")
+					    && i + 1 < codeLines.Length
+					    && !codeLines[i + 1].Contains("{"))
+					{
+						yield return line;
+					}
+
+					if (HasType(line))
+					{
+						typeFound = true;
+					}
+
+					if (typeFound)
+					{
+						var lineDifference = line.Where(x => x == '{').Count()
+						                     - line.Where(x => x == '}').Count();
+
+						paranthesis += lineDifference;
+
+						yield return line;
+
+						if (!HasType(line) && paranthesis == 0)
+						{
+							typeFound = false;
+						}
+					}
+				}
+
+				bool HasType(string line)
+				{
+					return line.Contains("class")
+					       || line.Contains("interface")
+					       || line.Contains("enum")
+					       || line.Contains("struct");
+				}
+			}
+		}
+
+		private void RunProgressBar()
+		{
+			Task.Run(() =>
+			{
+				for (var i = 0; i < 10; i++)
+				{
+					CodeEditor.ProgressBar.PerformStep();
+					Thread.Sleep(50);
+				}
+
+				CodeEditor.ProgressBar.Value = 0;
+			});
+		}
+	}
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class ShiftEnterCommand : Command
+	{
+		public override Keys Key => Keys.Enter;
+		public override bool RequireShift => true;
+
+		public override void Apply(RichTextBox code)
+		{
+			var shiftAmount = 0;
+
+			for (var i = code.SelectionStart; i < code.Text.Length; i++)
+			{
+				if (code.Text[i] == '\n')
+				{
+					break;
+				}
+
+				shiftAmount++;
+			}
+
+			code.SelectionStart += shiftAmount;
+		}
+	}
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6
+{
+	public class KeyState
+	{
+		public bool ControlPressed { get; private set; }
+		public bool ShiftPressed { get; private set; }
+		public bool AltPressed { get; private set; }
+
+		public void Update(KeyEventArgs keyArgs)
+		{
+			ControlPressed = keyArgs.Control;
+			AltPressed = keyArgs.Alt;
+			ShiftPressed = keyArgs.Shift;
+		}
+	}
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Core
+{
+	public class ModelView<TViewModel> : Form
+	{
+		protected TViewModel model;
+	}
+}
+using System.Drawing;
+
+namespace Shaykhullin.Lab6
+{
+	public abstract class FunctionHighlighter : Highlighter
+	{
+		public override Color Color => Color.Fuchsia;
+	}
+
+	public class WriteLineHighlighter : FunctionHighlighter
+	{
+		public override string Keyword => "WriteLine";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class AbstractHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "abstract";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class AddHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "add";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class AsHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "as";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class BaseHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "base";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class BoolHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "bool";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class BreakHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "break";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ByteHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "byte";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class CaseHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "case";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class CatchHighlighter : KeywordHighlighter

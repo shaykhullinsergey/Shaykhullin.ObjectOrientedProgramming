@@ -1,0 +1,1599 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace GeneratedNamespace
+{
+  public static class GeneratedClass
+  {
+    private static Action<object> WriteLine;
+
+    public static void GeneratedMethod(Action<object> WriteLine)
+    {
+      GeneratedClass.WriteLine = WriteLine;
+
+/*METHODS*/
+    }
+
+/*TYPES*/
+  }
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class BuildCommand : Command
+	{
+		public override Keys Key => Keys.B;
+		public override bool RequireControl => true;
+		public override bool RequireShift => true;
+
+		public override void Apply(RichTextBox code)
+		{
+			MessageBox.Show("Building");
+		}
+	}
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public abstract class Command
+	{
+		public virtual bool RequireControl { get; }
+		public virtual bool RequireShift { get; }
+		public virtual bool RequireAlt { get; }
+		public abstract Keys Key { get; }
+
+		public bool IsSatisfied(Keys key, KeyState state)
+		{
+			return Key == key
+			       && RequireControl == state.ControlPressed
+			       && RequireShift == state.ShiftPressed
+			       && RequireAlt == state.AltPressed;
+		}
+
+		public abstract void Apply(RichTextBox code);
+	}
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class ControlEnterCommand : Command
+	{
+		public override Keys Key => Keys.Enter;
+		public override bool RequireControl => true;
+
+		public override void Apply(RichTextBox code)
+		{
+			var shiftAmount = 0;
+
+			for (var i = code.SelectionStart - 1; i > 0; i--)
+			{
+				if (code.Text[i] == '\n')
+				{
+					break;
+				}
+
+				shiftAmount++;
+			}
+
+			code.SelectionStart -= shiftAmount + 1;
+		}
+	}
+}
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class ControlXCommand : Command
+	{
+		public override Keys Key => Keys.X;
+		public override bool RequireControl => true;
+
+		public override void Apply(RichTextBox code)
+		{
+			var lineNumber = code.GetLineFromCharIndex(code.SelectionStart);
+
+			var selection = code.SelectionStart;
+			code.Lines = ExceptIndex().ToArray();
+			code.SelectionStart = selection;
+
+			IEnumerable<string> ExceptIndex()
+			{
+				for (var i = 0; i < code.Lines.Length; i++)
+				{
+					if (i != lineNumber)
+					{
+						yield return code.Lines[i];
+					}
+				}
+			}
+		}
+	}
+}
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class EnterBracketCommand : Command
+	{
+		public override Keys Key => Keys.Enter;
+
+		public override void Apply(RichTextBox code)
+		{
+			var selected = code.SelectionStart;
+
+			if (code.Text.Length != selected
+			    && code.Text[selected - 1] == '{'
+			    && code.Text[selected] == '}')
+			{
+				Task.Run(() =>
+				{
+					CodeEditor.LockWindowUpdate(code.Handle);
+					Thread.Sleep(70);
+					code.Text = code.Text.Insert(selected + 1, "\t\n");
+					code.SelectionStart = selected + 2;
+					CodeEditor.LockWindowUpdate(IntPtr.Zero);
+				});
+			}
+		}
+	}
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class LeftCurlyBracketCommand : Command
+	{
+		public override Keys Key => Keys.OemOpenBrackets;
+		public override bool RequireShift => true;
+
+		public override void Apply(RichTextBox code)
+		{
+			var selected = code.SelectionStart;
+			code.Text = code.Text.Insert(code.SelectionStart, "}");
+			code.SelectionStart = selected;
+		}
+	}
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class LeftRoundBracketCommand : Command
+	{
+		public override Keys Key => Keys.D9;
+		public override bool RequireShift => true;
+
+		public override void Apply(RichTextBox code)
+		{
+			var selected = code.SelectionStart;
+			code.Text = code.Text.Insert(code.SelectionStart, ")");
+			code.SelectionStart = selected;
+		}
+	}
+}
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Microsoft.CodeAnalysis;
+using Shaykhullin.RoslynWrapper;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class RunCommand : Command
+	{
+		public override Keys Key => Keys.F5;
+		public override bool RequireControl => true;
+
+		public override void Apply(RichTextBox code)
+		{
+			CodeEditor.OutputWindow.Text = "";
+			CodeEditor.OutputWindow.Focus();
+			CodeEditor.OutputWindow.Visible = true;
+			RunProgressBar();
+
+			var start = code.GetLineFromCharIndex(code.SelectionStart);
+			var end = code.GetLineFromCharIndex(code.SelectionStart + code.SelectionLength);
+
+			var executionCode = code.SelectionLength == 0
+				? code.Lines
+				: code.Lines.Skip(start).Take(end - start + 1).ToArray();
+
+			var assembly = new AssemblyComposer(
+					new CSharpSyntaxTreeCompiler(
+						new CSharpSyntaxTreeAnalyzer(GenerateTemplate(executionCode)),
+						new[]
+						{
+							typeof(object).Assembly,
+							typeof(IEnumerable<>).Assembly,
+							typeof(ArrayConverter).Assembly,
+							typeof(Constraint).Assembly,
+							typeof(Bitmap).Assembly,
+							typeof(Enumerable).Assembly,
+							typeof(StringBuilder).Assembly,
+							typeof(Task).Assembly,
+							typeof(Form).Assembly
+						},
+						OptimizationLevel.Debug))
+				.ComposeAssembly();
+
+			if (assembly.Success)
+			{
+				EvaluateMethod(assembly.Assembly);
+			}
+			else
+			{
+				EvaluateErrors(assembly.Errors);
+			}
+		}
+
+		private void EvaluateMethod(Assembly assembly)
+		{
+			CodeEditor.OutputWindow.AppendText("Build success\n");
+
+			var type = assembly.GetType("GeneratedNamespace.GeneratedClass");
+			var method = type.GetMethod("GeneratedMethod", BindingFlags.Public | BindingFlags.Static);
+
+			try
+			{
+				method.Invoke(null,
+					new object[]
+					{
+						(Action<object>)(obj => CodeEditor.OutputWindow.AppendText(obj.ToString() + "\n"))
+					});
+			}
+			catch (Exception e)
+			{
+				CodeEditor.OutputWindow.AppendText("Exception: " + e.InnerException.Message + "\n");
+			}
+		}
+
+		private void EvaluateErrors(IEnumerable<Diagnostic> errors)
+		{
+			CodeEditor.OutputWindow.AppendText("Build failed\n");
+
+			foreach (var error in errors)
+			{
+				var editor = CodeEditor.Editor;
+				var selected = editor.SelectionStart;
+
+				var normalizedStart = 0; //error.Location.SourceSpan.Start;
+
+				editor.Select(normalizedStart, error.Location.SourceSpan.Length + 1);
+				editor.SelectionFont = new Font(editor.SelectionFont, FontStyle.Underline);
+
+				editor.Select(normalizedStart, error.Location.SourceSpan.Length + 1);
+				editor.SelectionColor = Color.Red;
+
+				editor.SelectionStart = selected;
+				editor.SelectionFont = new Font(editor.SelectionFont, FontStyle.Regular);
+
+				CodeEditor.OutputWindow.AppendText(error + "\n");
+			}
+		}
+
+		private string GenerateTemplate(string[] codeLines)
+		{
+			var template = File.ReadAllText(
+				Path.Combine(Environment.CurrentDirectory, "template.cs"));
+
+			var types = DetectTypes().ToList();
+			var methods = codeLines.Except(types);
+
+			template = template.Replace("/*METHODS*/", string.Join("\n", methods));
+			template = template.Replace("/*TYPES*/", string.Join("\n", types));
+
+			return template;
+
+			IEnumerable<string> DetectTypes()
+			{
+				var typeFound = false;
+				var paranthesis = 0;
+
+				for (var i = 0; i < codeLines.Length; i++)
+				{
+					var line = codeLines[i];
+
+					if (line.Contains("delegate")
+					    && !line.Contains("{")
+					    && i + 1 < codeLines.Length
+					    && !codeLines[i + 1].Contains("{"))
+					{
+						yield return line;
+					}
+
+					if (HasType(line))
+					{
+						typeFound = true;
+					}
+
+					if (typeFound)
+					{
+						var lineDifference = line.Where(x => x == '{').Count()
+						                     - line.Where(x => x == '}').Count();
+
+						paranthesis += lineDifference;
+
+						yield return line;
+
+						if (!HasType(line) && paranthesis == 0)
+						{
+							typeFound = false;
+						}
+					}
+				}
+
+				bool HasType(string line)
+				{
+					return line.Contains("class")
+					       || line.Contains("interface")
+					       || line.Contains("enum")
+					       || line.Contains("struct");
+				}
+			}
+		}
+
+		private void RunProgressBar()
+		{
+			Task.Run(() =>
+			{
+				for (var i = 0; i < 10; i++)
+				{
+					CodeEditor.ProgressBar.PerformStep();
+					Thread.Sleep(50);
+				}
+
+				CodeEditor.ProgressBar.Value = 0;
+			});
+		}
+	}
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Commands
+{
+	public class ShiftEnterCommand : Command
+	{
+		public override Keys Key => Keys.Enter;
+		public override bool RequireShift => true;
+
+		public override void Apply(RichTextBox code)
+		{
+			var shiftAmount = 0;
+
+			for (var i = code.SelectionStart; i < code.Text.Length; i++)
+			{
+				if (code.Text[i] == '\n')
+				{
+					break;
+				}
+
+				shiftAmount++;
+			}
+
+			code.SelectionStart += shiftAmount;
+		}
+	}
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6
+{
+	public class KeyState
+	{
+		public bool ControlPressed { get; private set; }
+		public bool ShiftPressed { get; private set; }
+		public bool AltPressed { get; private set; }
+
+		public void Update(KeyEventArgs keyArgs)
+		{
+			ControlPressed = keyArgs.Control;
+			AltPressed = keyArgs.Alt;
+			ShiftPressed = keyArgs.Shift;
+		}
+	}
+}
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6.Core
+{
+	public class ModelView<TViewModel> : Form
+	{
+		protected TViewModel model;
+	}
+}
+using System.Drawing;
+
+namespace Shaykhullin.Lab6
+{
+	public abstract class FunctionHighlighter : Highlighter
+	{
+		public override Color Color => Color.Fuchsia;
+	}
+
+	public class WriteLineHighlighter : FunctionHighlighter
+	{
+		public override string Keyword => "WriteLine";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class AbstractHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "abstract";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class AddHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "add";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class AsHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "as";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class BaseHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "base";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class BoolHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "bool";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class BreakHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "break";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ByteHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "byte";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class CaseHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "case";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class CatchHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "catch";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class CharHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "char";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class CheckedHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "checked";
+	}
+}
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6
+{
+	public class ClassHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "class ";
+
+		public override void Apply(RichTextBox editor)
+		{
+			base.Apply(editor);
+
+			var count = editor.Text.Substring(editor.SelectionStart)
+				.TakeWhile(x => x != ' ' && x != ':' && x != '\n' && x != '{' && x != '<')
+				.Count();
+
+			editor.SelectionLength = count;
+			editor.SelectionColor = Color.MediumAquamarine;
+			editor.SelectionStart += count;
+			editor.SelectionLength = 0;
+		}
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ConstHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "const";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ContinueHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "continue";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class DecimalHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "decimal";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class DefaultHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "default";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class DelegateHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "delegate";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class DoHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "do";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class DoubleHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "double";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ElseHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "else";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class EnumHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "enum";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class EventHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "event";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ExplicitHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "explicit";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ExternHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "extern";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class FalseHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "false";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class FinallyHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "finally";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class FixedHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "fixed";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class FloatHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "float";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ForeachHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "foreach";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ForHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "for";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class GetHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "get";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class GlobalHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "global";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class GotoHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "goto";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class IfHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "if";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ImplicitHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "implicit";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class InHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "in ";
+	}
+}
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6
+{
+	public class InterfaceHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "interface";
+
+		public override void Apply(RichTextBox editor)
+		{
+			base.Apply(editor);
+
+			var count = editor.Text.Substring(editor.SelectionStart)
+				.TakeWhile(x => x != ' ' && x != ':' && x != '\n' && x != '{' && x != '<')
+				.Count();
+
+			editor.SelectionLength = count;
+			editor.SelectionColor = Color.FromArgb(245, 255, 158);
+			editor.SelectionStart += count;
+			editor.SelectionLength = 0;
+		}
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class InternalHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "internal";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class IntHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "int";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class IsHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "is";
+	}
+}
+using System.Drawing;
+
+namespace Shaykhullin.Lab6
+{
+	public abstract class KeywordHighlighter : Highlighter
+	{
+		public sealed override Color Color { get; } = Color.FromArgb(59, 131, 247);
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class LockHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "lock";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class LongHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "long";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class NamespaceHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "namespace";
+	}
+}
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6
+{
+	public class NewHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "new";
+
+		public override void Apply(RichTextBox editor)
+		{
+			base.Apply(editor);
+
+			var count = editor.Text.Substring(editor.SelectionStart)
+				.TakeWhile(x => x != ' ' && x != '[' && x != '\n' && x != '{' && x != '(')
+				.Count();
+
+			editor.SelectionLength = count;
+			editor.SelectionColor = Color.MediumAquamarine;
+			editor.SelectionStart += count;
+			editor.SelectionLength = 0;
+		}
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class NullHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "null";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ObjectHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "object";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class OperatorHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "operator";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class OutHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "out";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class OverrideHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "override";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ParamsHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "params ";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class PartialHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "partial";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class PrivateHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "private";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ProtectedHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "protected";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class PublicHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "public";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ReadonlyHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "readonly";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class RefHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "ref";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class RemoveHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "remove";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ReturnHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "return";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class SbyteHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "sbyte";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class SealedHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "sealed";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class SetHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "set";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ShortHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "short";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class SizeofHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "sizeof";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class StackallocHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "stackalloc";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class StaticHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "static";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class StringHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "string";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class StructHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "struct";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class SwitchHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "switch";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ThisHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "this";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ThrowHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "throw";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class TrueHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "true";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class TryHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "try";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class TypeofHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "typeof";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class UintHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "uint";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class UlongHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "ulong";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class UncheckedHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "unchecked";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class UnsafeHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "unsafe";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class UshortHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "ushort";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class UsingHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "using";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class ValueHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "value";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class VarHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "var";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class VirtualHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "virtual";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class VoidHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "void";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class VolatileHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "volatile";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class WhereHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "where";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class WhileHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "while";
+	}
+}
+namespace Shaykhullin.Lab6
+{
+	public class YieldHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "yield";
+	}
+}
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace Shaykhullin.Lab6
+{
+	public abstract class Highlighter
+	{
+		public abstract string Keyword { get; }
+		public abstract Color Color { get; }
+
+		public bool IsSatisfied(string keyword, int index)
+		{
+			for (var i = 0; i < Keyword.Length; i++)
+			{
+				if (index + i >= keyword.Length || keyword[index + i] != Keyword[i])
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		public virtual void Apply(RichTextBox editor)
+		{
+			editor.SelectionLength = Keyword.Length;
+			editor.SelectionColor = Color;
+			editor.SelectionStart += Keyword.Length;
+			editor.SelectionLength = 0;
+		}
+	}
+}
+using System.Reflection;
+using System.Runtime.InteropServices;
+
+// General Information about an assembly is controlled through the following
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+[assembly: AssemblyTitle("Shaykhullin.Lab6")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Shaykhullin.Lab6")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+
+// Setting ComVisible to false makes the types in this assembly not visible
+// to COM components.  If you need to access a type in this assembly from
+// COM, set the ComVisible attribute to true on that type.
+[assembly: ComVisible(false)]
+
+// The following GUID is for the ID of the typelib if this project is exposed to COM
+[assembly: Guid("74552892-0f97-4245-9359-94ef1e60b943")]
+
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Build and Revision Numbers
+// by using the '*' as shown below:
+// [assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
+//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//     Runtime Version:4.0.30319.42000
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+namespace Shaykhullin.Lab6.Properties
+{
+
+
+  /// <summary>
+  ///   A strongly-typed resource class, for looking up localized strings, etc.
+  /// </summary>
+  // This class was auto-generated by the StronglyTypedResourceBuilder
+  // class via a tool like ResGen or Visual Studio.
+  // To add or remove a member, edit your .ResX file then rerun ResGen
+  // with the /str option, or rebuild your VS project.
+  [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+  internal class Resources
+  {
+
+    private static global::System.Resources.ResourceManager resourceMan;
+
+    private static global::System.Globalization.CultureInfo resourceCulture;
+
+    [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+    internal Resources()
+    {
+    }
+
+    /// <summary>
+    ///   Returns the cached ResourceManager instance used by this class.
+    /// </summary>
+    [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+    internal static global::System.Resources.ResourceManager ResourceManager
+    {
+      get
+      {
+        if ((resourceMan == null))
+        {
+          global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Shaykhullin.Lab6.Properties.Resources", typeof(Resources).Assembly);
+          resourceMan = temp;
+        }
+        return resourceMan;
+      }
+    }
+
+    /// <summary>
+    ///   Overrides the current thread's CurrentUICulture property for all
+    ///   resource lookups using this strongly typed resource class.
+    /// </summary>
+    [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+    internal static global::System.Globalization.CultureInfo Culture
+    {
+      get
+      {
+        return resourceCulture;
+      }
+      set
+      {
+        resourceCulture = value;
+      }
+    }
+  }
+}
+//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//     Runtime Version:4.0.30319.42000
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+namespace Shaykhullin.Lab6.Properties
+{
+
+
+  [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+  [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
+  internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
+  {
+
+    private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+
+    public static Settings Default
+    {
+      get
+      {
+        return defaultInstance;
+      }
+    }
+  }
+}
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using Shaykhullin.Lab6.Commands;
+
+namespace Shaykhullin.Lab6.ViewModels
+{
+	public class CodeEditorViewModel
+	{
+		private readonly IList<Command> commands;
+		private readonly IList<Highlighter> highlighters;
+		private readonly KeyState state;
+
+		public CodeEditorViewModel()
+		{
+			commands = typeof(Command).Assembly.GetTypes()
+				.Where(type => !type.IsAbstract)
+				.Where(type => typeof(Command).IsAssignableFrom(type))
+				.Select(type => (Command)Activator.CreateInstance(type))
+				.ToList();
+
+			highlighters = typeof(Highlighter).Assembly.GetTypes()
+				.Where(type => !type.IsAbstract)
+				.Where(type => typeof(Highlighter).IsAssignableFrom(type))
+				.Select(type => (Highlighter)Activator.CreateInstance(type))
+				.OrderByDescending(h => h.Keyword.Length)
+				.ToList();
+
+			state = new KeyState();
+		}
+
+		public void UpdateState(KeyEventArgs args)
+		{
+			state.Update(args);
+		}
+
+		public void TryExecuteCommand(RichTextBox editor, KeyEventArgs args)
+		{
+			for (var i = 0; i < commands.Count; i++)
+			{
+				if (commands[i].IsSatisfied(args.KeyCode, state))
+				{
+					commands[i].Apply(editor);
+					return;
+				}
+			}
+		}
+
+		public bool TryExecuteHighlighter(RichTextBox editor, string keyword, int index)
+		{
+			for (var i = 0; i < highlighters.Count; i++)
+			{
+				if (highlighters[i].IsSatisfied(keyword, index))
+				{
+					highlighters[i].Apply(editor);
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public void ResetSelectionToStart(RichTextBox editor)
+		{
+			editor.SelectionStart = editor.SelectionLength = 0;
+		}
+
+		public void SetNextSelectionAndColor(RichTextBox editor)
+		{
+			editor.SelectionLength = 1;
+			editor.SelectionColor = Color.WhiteSmoke;
+			editor.SelectionStart++;
+			editor.SelectionLength = 0;
+		}
+
+		public void SetAllTextToRegularFont(RichTextBox editor)
+		{
+			editor.SelectAll();
+			editor.SelectionFont = new Font(editor.SelectionFont, FontStyle.Regular);
+		}
+
+		public void SetSelectedUnderscoreFont(RichTextBox editor)
+		{
+		}
+	}
+}
+using System;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using Shaykhullin.Lab6.Core;
+using Shaykhullin.Lab6.ViewModels;
+
+namespace Shaykhullin.Lab6
+{
+	public partial class CodeEditor : ModelView<CodeEditorViewModel>
+	{
+		private string prevText;
+
+		public CodeEditor()
+		{
+			InitializeComponent();
+
+			Editor = editor;
+			OutputWindow = outputWindow;
+			ProgressBar = toolStripProgressBar1;
+
+			model = new CodeEditorViewModel();
+
+			OnTextChanged(null, null);
+		}
+
+		public static TextBox OutputWindow { get; private set; }
+		public static RichTextBox Editor { get; private set; }
+		public static ToolStripProgressBar ProgressBar { get; private set; }
+
+		[DllImport("user32.dll")]
+		public static extern bool LockWindowUpdate(IntPtr hWndLock);
+
+		private void OnKeyDown(object sender, KeyEventArgs args)
+		{
+			model.UpdateState(args);
+
+			LockWindowUpdate(editor.Handle);
+			model.TryExecuteCommand(editor, args);
+			LockWindowUpdate(IntPtr.Zero);
+		}
+
+		private void OnTextChanged(object sender, EventArgs e)
+		{
+			if (prevText == editor.Text)
+			{
+				return;
+			}
+
+			prevText = editor.Text;
+			OnOutputDisable(sender, e);
+
+			var selection = editor.SelectionStart;
+			LockWindowUpdate(editor.Handle);
+
+			model.SetAllTextToRegularFont(editor);
+			model.ResetSelectionToStart(editor);
+
+			while (editor.SelectionStart < editor.Text.Length)
+			{
+				if (model.TryExecuteHighlighter(editor, editor.Text, editor.SelectionStart))
+				{
+					model.SetNextSelectionAndColor(editor);
+				}
+				else
+				{
+					var current = editor.Text[editor.SelectionStart];
+
+					while (char.IsLetterOrDigit(current) && editor.Text.Length - 1 != editor.SelectionStart)
+					{
+						current = editor.Text[++editor.SelectionStart];
+					}
+
+					editor.SelectionStart++;
+				}
+			}
+
+			editor.SelectionStart = selection;
+			LockWindowUpdate(IntPtr.Zero);
+		}
+
+		private void OnOutputDisable(object sender, EventArgs e)
+		{
+			outputWindow.Visible = false;
+		}
+	}
+}
+namespace Shaykhullin.Lab6
+{
+  partial class CodeEditor
+  {
+    /// <summary>
+    /// Required designer variable.
+    /// </summary>
+    private System.ComponentModel.IContainer components = null;
+
+    /// <summary>
+    /// Clean up any resources being used.
+    /// </summary>
+    /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing && (components != null))
+      {
+        components.Dispose();
+      }
+      base.Dispose(disposing);
+    }
+
+    #region Windows Form Designer generated code
+
+    /// <summary>
+    /// Required method for Designer support - do not modify
+    /// the contents of this method with the code editor.
+    /// </summary>
+    private void InitializeComponent()
+    {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CodeEditor));
+      this.editor = new System.Windows.Forms.RichTextBox();
+      this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+      this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
+      this.outputWindow = new System.Windows.Forms.TextBox();
+      this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+      this.statusStrip1.SuspendLayout();
+      this.SuspendLayout();
+      // 
+      // editor
+      // 
+      this.editor.AcceptsTab = true;
+      this.editor.Anchor = System.Windows.Forms.AnchorStyles.None;
+      this.editor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+      this.editor.BorderStyle = System.Windows.Forms.BorderStyle.None;
+      this.editor.Font = new System.Drawing.Font("DejaVu Sans Mono", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.editor.ForeColor = System.Drawing.SystemColors.MenuBar;
+      this.editor.ImeMode = System.Windows.Forms.ImeMode.On;
+      this.editor.Location = new System.Drawing.Point(0, -2);
+      this.editor.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+      this.editor.MaximumSize = new System.Drawing.Size(2333, 2000);
+      this.editor.MinimumSize = new System.Drawing.Size(583, 500);
+      this.editor.Name = "editor";
+      this.editor.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+      this.editor.ShowSelectionMargin = true;
+      this.editor.Size = new System.Drawing.Size(1790, 993);
+      this.editor.TabIndex = 0;
+      this.editor.TabStop = false;
+      this.editor.Text = "int a = 10;\nint b = 10;\n\nWriteLine(a + b);";
+      this.editor.Click += new System.EventHandler(this.OnOutputDisable);
+      this.editor.TextChanged += new System.EventHandler(this.OnTextChanged);
+      this.editor.Enter += new System.EventHandler(this.OnOutputDisable);
+      this.editor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnKeyDown);
+      // 
+      // statusStrip1
+      // 
+      this.statusStrip1.AllowMerge = false;
+      this.statusStrip1.AutoSize = false;
+      this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripDropDownButton2,
+            this.toolStripProgressBar1});
+      this.statusStrip1.Location = new System.Drawing.Point(0, 991);
+      this.statusStrip1.Name = "statusStrip1";
+      this.statusStrip1.Padding = new System.Windows.Forms.Padding(16, 0, 1, 0);
+      this.statusStrip1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+      this.statusStrip1.Size = new System.Drawing.Size(1790, 22);
+      this.statusStrip1.SizingGrip = false;
+      this.statusStrip1.Stretch = false;
+      this.statusStrip1.TabIndex = 2;
+      this.statusStrip1.Text = "statusStrip1";
+      // 
+      // toolStripDropDownButton2
+      // 
+      this.toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
+      this.toolStripDropDownButton2.Size = new System.Drawing.Size(13, 20);
+      this.toolStripDropDownButton2.Text = "toolStripDropDownButton2";
+      // 
+      // outputWindow
+      // 
+      this.outputWindow.Anchor = System.Windows.Forms.AnchorStyles.None;
+      this.outputWindow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+      this.outputWindow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+      this.outputWindow.Font = new System.Drawing.Font("DejaVu Sans Mono", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.outputWindow.ForeColor = System.Drawing.SystemColors.Window;
+      this.outputWindow.Location = new System.Drawing.Point(0, 776);
+      this.outputWindow.Multiline = true;
+      this.outputWindow.Name = "outputWindow";
+      this.outputWindow.ReadOnly = true;
+      this.outputWindow.ShortcutsEnabled = false;
+      this.outputWindow.Size = new System.Drawing.Size(1790, 212);
+      this.outputWindow.TabIndex = 3;
+      this.outputWindow.TabStop = false;
+      this.outputWindow.Visible = false;
+      this.outputWindow.Leave += new System.EventHandler(this.OnOutputDisable);
+      // 
+      // toolStripProgressBar1
+      // 
+      this.toolStripProgressBar1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+      this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(1400, 3, 1, 3);
+      this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+      this.toolStripProgressBar1.Size = new System.Drawing.Size(117, 16);
+      // 
+      // CodeEditor
+      // 
+      this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
+      this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+      this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(49)))), ((int)(((byte)(49)))));
+      this.ClientSize = new System.Drawing.Size(1790, 1013);
+      this.Controls.Add(this.outputWindow);
+      this.Controls.Add(this.statusStrip1);
+      this.Controls.Add(this.editor);
+      this.DoubleBuffered = true;
+      this.Font = new System.Drawing.Font("DejaVu Sans Mono", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+      this.Name = "CodeEditor";
+      this.Text = "Shaykhullin";
+      this.statusStrip1.ResumeLayout(false);
+      this.statusStrip1.PerformLayout();
+      this.ResumeLayout(false);
+      this.PerformLayout();
+
+    }
+
+    #endregion
+
+    private System.Windows.Forms.RichTextBox editor;
+    private System.Windows.Forms.StatusStrip statusStrip1;
+    private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
+    private System.Windows.Forms.TextBox outputWindow;
+    private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
+  }
+}

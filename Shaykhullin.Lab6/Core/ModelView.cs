@@ -2,8 +2,8 @@
 
 namespace Shaykhullin.Lab6.Core
 {
-  public class ModelView<TViewModel> : Form
-  {
-    protected TViewModel model;
-  }
+	public class ModelView<TViewModel> : Form
+	{
+		protected TViewModel model;
+	}
 }

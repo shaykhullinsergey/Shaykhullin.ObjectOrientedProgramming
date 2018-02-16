@@ -1,7 +1,7 @@
 ﻿namespace Shaykhullin.Lab6
 {
-  public class BreakHighlighter : KeywordHighlighter
-  {
-    public override string Keyword => "break";
-  }
+	public class BreakHighlighter : KeywordHighlighter
+	{
+		public override string Keyword => "break";
+	}
 }

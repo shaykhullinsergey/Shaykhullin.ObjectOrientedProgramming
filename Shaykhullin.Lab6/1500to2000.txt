@@ -1,52 +1,7 @@
-﻿namespace Shaykhullin.Lab6
-{
-  partial class CodeEditor
-  {
-    /// <summary>
-    /// Required designer variable.
-    /// </summary>
-    private System.ComponentModel.IContainer components = null;
-
-    /// <summary>
-    /// Clean up any resources being used.
-    /// </summary>
-    /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-    protected override void Dispose(bool disposing)
-    {
-      if (disposing && (components != null))
-      {
-        components.Dispose();
-      }
-      base.Dispose(disposing);
-    }
-
-    #region Windows Form Designer generated code
-
-    /// <summary>
-    /// Required method for Designer support - do not modify
-    /// the contents of this method with the code editor.
-    /// </summary>
-    private void InitializeComponent()
-    {
-      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CodeEditor));
-      this.editor = new System.Windows.Forms.RichTextBox();
-      this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-      this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
-      this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
-      this.outputWindow = new System.Windows.Forms.TextBox();
-      this.statusStrip1.SuspendLayout();
-      this.SuspendLayout();
-      // 
-      // editor
-      // 
-      this.editor.AcceptsTab = true;
-      this.editor.Anchor = System.Windows.Forms.AnchorStyles.None;
-      this.editor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-      this.editor.BorderStyle = System.Windows.Forms.BorderStyle.None;
       this.editor.Font = new System.Drawing.Font("DejaVu Sans Mono", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.editor.ForeColor = System.Drawing.SystemColors.MenuBar;
       this.editor.ImeMode = System.Windows.Forms.ImeMode.On;
-      this.editor.Location = new System.Drawing.Point(1, -2);
+      this.editor.Location = new System.Drawing.Point(0, -2);
       this.editor.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
       this.editor.MaximumSize = new System.Drawing.Size(2333, 2000);
       this.editor.MinimumSize = new System.Drawing.Size(583, 500);
@@ -86,13 +41,6 @@
       this.toolStripDropDownButton2.Size = new System.Drawing.Size(13, 20);
       this.toolStripDropDownButton2.Text = "toolStripDropDownButton2";
       // 
-      // toolStripProgressBar1
-      // 
-      this.toolStripProgressBar1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-      this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(1400, 3, 1, 3);
-      this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-      this.toolStripProgressBar1.Size = new System.Drawing.Size(117, 16);
-      // 
       // outputWindow
       // 
       this.outputWindow.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -110,6 +58,13 @@
       this.outputWindow.TabStop = false;
       this.outputWindow.Visible = false;
       this.outputWindow.Leave += new System.EventHandler(this.OnOutputDisable);
+      // 
+      // toolStripProgressBar1
+      // 
+      this.toolStripProgressBar1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+      this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(1400, 3, 1, 3);
+      this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+      this.toolStripProgressBar1.Size = new System.Drawing.Size(117, 16);
       // 
       // CodeEditor
       // 
